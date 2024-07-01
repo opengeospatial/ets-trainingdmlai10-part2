@@ -57,6 +57,9 @@ public class SuiteFixtureListener implements ISuiteListener {
     void processSuiteParameters(ISuite suite) {
         Map<String, String> params = suite.getXmlSuite().getParameters();
         TestSuiteLogger.log(Level.CONFIG, "Suite parameters\n" + params.toString());
+        
+     
+        
         String iutParam = params.get(TestRunArg.IUT.toString());
         if ((null == iutParam) || iutParam.isEmpty()) {
             throw new IllegalArgumentException("Required test run parameter not found: " + TestRunArg.IUT.toString());
@@ -64,26 +67,16 @@ public class SuiteFixtureListener implements ISuiteListener {
         URI iutRef = URI.create(iutParam.trim());
         File entityFile = null;
         try {
-            entityFile = URIUtils.dereferenceURI(iutRef);
-        } catch (IOException iox) {
-            throw new RuntimeException("Failed to dereference resource located at " + iutRef, iox);
+        	entityFile = URIUtils.dereferenceURI( iutRef );
+        } catch ( IOException ioxc ) {
+            throw new RuntimeException( "Failed to dereference resource located at " + iutRef, ioxc );
         }
-        TestSuiteLogger.log(Level.FINE, String.format("Wrote test subject to file: %s (%d bytes)",
-                entityFile.getAbsolutePath(), entityFile.length()));
         suite.setAttribute(SuiteAttribute.TEST_SUBJ_FILE.getName(), entityFile);
-        Document iutDoc = null;
-        try {
-            iutDoc = URIUtils.parseURI(entityFile.toURI());
-        } catch (Exception x) {
-            throw new RuntimeException("Failed to parse resource retrieved from " + iutRef, x);
-        }
-        suite.setAttribute(SuiteAttribute.TEST_SUBJECT.getName(), iutDoc);
-        if (TestSuiteLogger.isLoggable(Level.FINE)) {
-            StringBuilder logMsg = new StringBuilder("Parsed resource retrieved from ");
-            logMsg.append(iutRef).append("\n");
-            logMsg.append(XMLUtils.writeNodeToString(iutDoc));
-            TestSuiteLogger.log(Level.FINE, logMsg.toString());
-        }
+        TestSuiteLogger.log( Level.FINE, String.format( "Wrote test subject to file: %s (%d bytes)",
+        		entityFile.getAbsolutePath(), entityFile.length() ) );
+        suite.setAttribute(SuiteAttribute.TEST_SUBJECT.getName(), entityFile);        
+        
+        
     }
 
     /**

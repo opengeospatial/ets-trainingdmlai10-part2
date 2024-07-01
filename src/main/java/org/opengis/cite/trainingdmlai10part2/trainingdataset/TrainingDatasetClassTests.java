@@ -93,7 +93,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     	}
     	
     	BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
-	      String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_trainingDataset.json";
+	      String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_eoTrainingDataset.json";
 	  	
 	        boolean valid = false;
 	        StringBuffer sb = new StringBuffer();
@@ -105,7 +105,17 @@ public class TrainingDatasetClassTests extends CommonFixture {
 		      JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
 		          JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
 		          
+		          System.out.println("ACHK 1");
+		          
+		          
 		          schema.initializeValidators(); 
+
+		          System.out.println("ACHK 2");
+		          
+		          System.out.println(schema);
+		          
+		          
+		          System.out.println("ACHK 3");
 		          
 		          JsonNode node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
 		          Set<ValidationMessage> errors = schema.validate(node);
@@ -123,6 +133,8 @@ public class TrainingDatasetClassTests extends CommonFixture {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	        
+	        System.out.println("CHK RESULT "+sb.toString()+"\n"+(sb.toString().length()==0));
 
 	        Assert.assertTrue(sb.toString().length()==0,sb.toString());
     }
