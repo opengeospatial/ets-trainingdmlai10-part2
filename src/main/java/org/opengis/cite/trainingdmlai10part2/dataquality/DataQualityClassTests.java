@@ -22,46 +22,6 @@ import org.xml.sax.SAXException;
  */
 public class DataQualityClassTests extends CommonFixture {
 
-    private Document testSubject;
-
-    /**
-     * Obtains the test subject from the ISuite context. The suite attribute
-     * {@link org.opengis.cite.trainingdmlai10part2.SuiteAttribute#TEST_SUBJECT} should
-     * evaluate to a DOM Document node.
-     * 
-     * @param testContext
-     *            The test (group) context.
-     */
-    @BeforeClass
-    public void obtainTestSubject(ITestContext testContext) {
-        Object obj = testContext.getSuite().getAttribute(
-                SuiteAttribute.TEST_SUBJECT.getName());
-        if ((null != obj) && Document.class.isAssignableFrom(obj.getClass())) {
-            this.testSubject = Document.class.cast(obj);
-        }
-    }
-
-    /**
-     * Sets the test subject. This method is intended to facilitate unit
-     * testing.
-     *
-     * @param testSubject A Document node representing the test subject or
-     * metadata about it.
-     */
-    public void setTestSubject(Document testSubject) {
-        this.testSubject = testSubject;
-    }
-
-    /**
-     * Verifies the string is empty.
-     */
-    @Test(description = "Implements ATC 1-1")
-    public void isEmpty() {
-        String str = "  foo   ";
-        Assert.assertTrue(str.isEmpty(),
-                ErrorMessage.get(ErrorMessageKeys.EMPTY_STRING));
-    }
-
     /**
      * Checks the behavior of the trim function.
      */
@@ -71,25 +31,5 @@ public class DataQualityClassTests extends CommonFixture {
         Assert.assertTrue("foo".equals(str.trim()));
     }
 
-    /**
-     * Verify the test subject is a valid Atom feed.
-     *
-     * @throws SAXException
-     *             If the resource cannot be parsed.
-     * @throws IOException
-     *             If the resource is not accessible.
-     */
-    @Test(description = "Implements ATC 1-3")
-    public void docIsValidAtomFeed() throws SAXException, IOException {
-        URL schemaRef = getClass().getResource(
-                "/org/opengis/cite/trainingdmlai10part2/rnc/atom.rnc");
-        RelaxNGValidator rngValidator = new RelaxNGValidator(schemaRef);
-        Source xmlSource = (null != testSubject)
-                ? new DOMSource(testSubject) : null;
-        rngValidator.validate(xmlSource);
-        ValidationErrorHandler err = rngValidator.getErrorHandler();
-        Assert.assertFalse(err.errorsDetected(),
-                ErrorMessage.format(ErrorMessageKeys.NOT_SCHEMA_VALID,
-                err.getErrorCount(), err.toString()));
-    }
+
 }

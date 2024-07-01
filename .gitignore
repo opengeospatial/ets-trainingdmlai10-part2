@@ -1,2 +1,4 @@
 .DS_Store
 /target/
+src/main/resources/test-run-props.xml
+target/

@@ -1,0 +1,141 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_trainingDataset.json",
+    "title": "AI_AbstractTrainingDataset",
+    "type": "object",
+    "required": [
+        "id",
+        "name",
+        "description",
+        "license",
+        "tasks",
+        "data",
+        "type"
+    ],
+    "properties": {
+        "type": {
+            "type": "string",
+            "enum": [
+                "AI_AbstractTrainingDataset"
+            ]
+        },
+        "amountOfTrainingData": {
+            "type": "integer"
+        },
+        "classes": {
+            "type": "array",
+            "items": {
+                "$ref": "./namedValue.json"
+            }
+        },
+        "classificationScheme": {
+            "type": "string"
+        },
+        "createdTime": {
+            "$ref": "./dateTime.json"
+        },
+        "dataSources": {
+            "type": "array",
+            "items": {
+                "$ref": "./ci_citation.json"
+            }
+        },
+        "description": {
+            "type": "string"
+        },
+        "doi": {
+            "type": "string"
+        },
+        "id": {
+            "type": "string"
+        },
+        "keywords": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "license": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "numberOfClasses": {
+            "type": "integer"
+        },
+        "providers": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "scope": {
+            "$ref": "./md_scope.json"
+        },
+        "statisticsInfo": {
+            "type": "array",
+            "items": {
+                "$ref": "./namedValue.json"
+            }
+        },
+        "updatedTime": {
+            "$ref": "./dateTime.json"
+        },
+        "version": {
+            "type": "string"
+        },
+        "labeling": {
+            "type": "array",
+            "items": {
+                "$ref": "./ai_labeling.json"
+            }
+        },
+        "metricsInLIT": {
+            "type": "array",
+            "items": {
+                "$ref": "./ai_metricsInLiterature.json"
+            }
+        },
+        "tasks": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "$ref": "./ai_task.json"
+                    },
+                    {
+                        "$ref": "./ai_eoTask.json"
+                    }
+                ]
+            },
+            "minItems": 1
+        },
+        "quality": {
+            "type": "array",
+            "items": {
+                "$ref": "./dataQuality.json"
+            }
+        },
+        "changesets": {
+            "type": "array",
+            "items": {
+                "$ref": "./ai_tdChangeset.json"
+            }
+        },
+        "data": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "$ref": "./ai_trainingData.json"
+                    },
+                    {
+                        "$ref": "./ai_eoTrainingData.json"
+                    }
+                ]
+            },
+            "minItems": 1
+        }
+    }
+}

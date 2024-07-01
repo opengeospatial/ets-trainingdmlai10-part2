@@ -1,0 +1,79 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/qualityResult.json",
+    "title": "QualityResult",
+    "oneOf": [
+        {
+            "type": "object",
+            "required": [
+                "quantitativeResult"
+            ],
+            "properties": {
+                "dateTime": {
+                    "$ref": "./dateTime.json"
+                },
+                "resultScope": {
+                    "$ref": "./md_scope.json"
+                },
+                "quantitativeResult": {
+                    "$ref": "./quantitativeResult.json"
+                }
+            },
+            "additionalProperties": false
+        },
+        {
+            "type": "object",
+            "required": [
+                "conformanceResult"
+            ],
+            "properties": {
+                "dateTime": {
+                    "$ref": "./dateTime.json"
+                },
+                "resultScope": {
+                    "$ref": "./md_scope.json"
+                },
+                "conformanceResult": {
+                    "$ref": "./conformanceResult.json"
+                }
+            },
+            "additionalProperties": false
+        },
+        {
+            "type": "object",
+            "required": [
+                "descriptiveResult"
+            ],
+            "properties": {
+                "dateTime": {
+                    "$ref": "./dateTime.json"
+                },
+                "resultScope": {
+                    "$ref": "./md_scope.json"
+                },
+                "descriptiveResult": {
+                    "$ref": "./descriptiveResult.json"
+                }
+            },
+            "additionalProperties": false
+        },
+        {
+            "type": "object",
+            "required": [
+                "coverageResult"
+            ],
+            "properties": {
+                "dateTime": {
+                    "$ref": "./dateTime.json"
+                },
+                "resultScope": {
+                    "$ref": "./md_scope.json"
+                },
+                "coverageResult": {
+                    "$ref": "./coverageResult.json"
+                }
+            },
+            "additionalProperties": false
+        }
+    ]
+}

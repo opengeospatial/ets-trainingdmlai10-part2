@@ -3,7 +3,6 @@
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/util/XMLUtils.java
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/package-info.java
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/ErrorMessage.java
-/Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/level1/package-info.java
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/trainingdataset/TrainingDatasetClassTests.java
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/tdchangeset/TDChangesetClassTests.java
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/label/LabelClassTests.java
@@ -21,7 +20,7 @@
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/Namespaces.java
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/task/TaskClassTests.java
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/TestFailureListener.java
-/Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/level1/Capability1Tests.java
+/Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/BaseJsonSchemaValidatorTest.java
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/ReusableEntityFilter.java
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/util/package-info.java
 /Users/gobehobona/Documents/GitHub/ets-trainingdmlai10-part2/src/main/java/org/opengis/cite/trainingdmlai10part2/SuiteFixtureListener.java

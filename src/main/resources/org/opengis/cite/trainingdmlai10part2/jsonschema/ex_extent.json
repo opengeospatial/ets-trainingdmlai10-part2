@@ -1,0 +1,57 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_extent.json",
+    "title": "EX_Extent",
+    "oneOf": [
+        {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "geographicElement": {
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "$ref": "./ex_boundingPolygon.json"
+                            },
+                            {
+                                "$ref": "./ex_geographicBoundingBox.json"
+                            },
+                            {
+                                "$ref": "./ex_geographicDescription.json"
+                            }
+                        ]
+                    }
+                },
+                "temporalElement": {
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "$ref": "./ex_temporalExtent.json"
+                            },
+                            {
+                                "$ref": "./ex_spatialTemporalExtent.json"
+                            }
+                        ]
+                    }
+                },
+                "verticalElement": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "./ex_verticalExtent.json"
+                    }
+                }
+            }
+        },
+        {
+            "type": "array",
+            "items": {
+                "type": "number"
+            },
+            "minItems": 4
+        }
+    ]
+}
