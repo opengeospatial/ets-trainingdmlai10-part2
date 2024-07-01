@@ -149,26 +149,21 @@ public class TestNGController implements TestSuiteController {
      *             If any arguments are missing or invalid for some reason.
      */
     void validateTestRunArgs(Document testRunArgs) {
-    	System.out.println("CHK 1");
         if (null == testRunArgs || !testRunArgs.getDocumentElement().getNodeName().equals("properties")) {
             throw new IllegalArgumentException("Input is not an XML properties document.");
         }
-        System.out.println("CHK 2");
         NodeList entries = testRunArgs.getDocumentElement().getElementsByTagName("entry");
         if (entries.getLength() == 0) {
             throw new IllegalArgumentException("No test run arguments found.");
         }
-        System.out.println("CHK 3");
         Map<String, String> args = new HashMap<String, String>();
         for (int i = 0; i < entries.getLength(); i++) {
             Element entry = (Element) entries.item(i);
             args.put(entry.getAttribute("key"), entry.getTextContent());
         }
-        System.out.println("CHK 4");
         if (!args.containsKey(TestRunArg.IUT.toString())) {
             throw new IllegalArgumentException(
                     String.format("Missing argument: '%s' must be present.", TestRunArg.IUT));
         }
-        System.out.println("CHK 5");
     }
 }

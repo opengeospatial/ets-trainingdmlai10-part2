@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://localhost:8000/ai_eoTrainingData.json",
+    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_eoTrainingData.json",
     "title": "AI_EOTrainingData",
     "type": "object",
     "required": [
@@ -22,7 +22,7 @@
         "dataSources": {
             "type": "array",
             "items": {
-                "$ref": "./ci_citation.json"
+                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ci_citation.json"
             }
         },
         "id": {
@@ -40,12 +40,12 @@
             "minItems": 1
         },
         "extent": {
-            "$ref": "./ex_extent.json"
+            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_extent.json"
         },
         "dataTime": {
             "type": "array",
             "items": {
-                "$ref": "./dateTime.json"
+                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/dateTime.json"
             }
         },
         "labels": {
@@ -53,16 +53,16 @@
             "items": {
                 "oneOf": [
                     {
-                        "$ref": "./ai_label.json"
+                        "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_label.json"
                     },
                     {
-                        "$ref": "./ai_sceneLabel.json"
+                        "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_sceneLabel.json"
                     },
                     {
-                        "$ref": "./ai_objectLabel.json"
+                        "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_objectLabel.json"
                     },
                     {
-                        "$ref": "./ai_pixelLabel.json"
+                        "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_pixelLabel.json"
                     }
                 ]
             },
@@ -71,16 +71,16 @@
         "labeling": {
             "type": "array",
             "items": {
-                "$ref": "./ai_labeling.json"
+                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_labeling.json"
             }
         },
         "trainingType": {
-            "$ref": "./ai_trainingTypeCode.json"
+            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_trainingTypeCode.json"
         },
         "quality": {
             "type": "array",
             "items": {
-                "$ref": "./dataQuality.json"
+                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/dataQuality.json"
             }
         }
     }

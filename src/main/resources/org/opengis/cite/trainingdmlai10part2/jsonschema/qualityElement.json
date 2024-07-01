@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://localhost:8000/qualityElement.json",
+    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/qualityElement.json",
     "title": "QualityElement",
     "type": "object",
     "required": [
@@ -14,15 +14,15 @@
             "type": "string"
         },
         "measure": {
-            "$ref": "./measureReference.json"
+            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/measureReference.json"
         },
         "evaluationMethod": {
-            "$ref": "./evaluationMethod.json"
+            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/evaluationMethod.json"
         },
         "result": {
             "type": "array",
             "items": {
-                "$ref": "./qualityResult.json"
+                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/qualityResult.json"
             },
             "minItems": 1
         }

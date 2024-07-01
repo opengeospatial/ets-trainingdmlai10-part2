@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://localhost:8000/ci_onlineResource.json",
+    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ci_onlineResource.json",
     "title": "CI_OnlineResource",
     "type": "object",
     "required": [

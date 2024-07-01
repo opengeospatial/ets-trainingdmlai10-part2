@@ -85,7 +85,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
      * Checks the behavior of the trim function.
      */
     @Test(description = "Implements AI TrainingDataset - TBA")
-    public void validateByAdvancedSchema() {
+    public void validateBySchema() {
     
     	
     	if(!testSubject.isFile()) {
@@ -104,18 +104,8 @@ public class TrainingDatasetClassTests extends CommonFixture {
 	        try {
 		      JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
 		          JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
-		          
-		          System.out.println("ACHK 1");
-		          
-		          
-		          schema.initializeValidators(); 
 
-		          System.out.println("ACHK 2");
-		          
-		          System.out.println(schema);
-		          
-		          
-		          System.out.println("ACHK 3");
+		          schema.initializeValidators(); 
 		          
 		          JsonNode node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
 		          Set<ValidationMessage> errors = schema.validate(node);
@@ -130,11 +120,12 @@ public class TrainingDatasetClassTests extends CommonFixture {
 				}
 				
 		} catch (IOException e) {
+			System.out.println(e.getMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	        
-	        System.out.println("CHK RESULT "+sb.toString()+"\n"+(sb.toString().length()==0));
+	        System.out.println("CHK "+this.getClass().getName()+" RESULT "+sb.toString()+" = "+(sb.toString().length()==0));
 
 	        Assert.assertTrue(sb.toString().length()==0,sb.toString());
     }

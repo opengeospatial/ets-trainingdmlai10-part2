@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://localhost:8000/ex_boundingPolygon.json",
+    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_boundingPolygon.json",
     "title": "EX_BoundingPolygon",
     "type": "object",
     "required": [
@@ -13,7 +13,7 @@
         "polygon": {
             "type": "array",
             "items": {
-                "$ref": "./polygon.json"
+                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/polygon.json"
             },
             "minItems": 1
         }

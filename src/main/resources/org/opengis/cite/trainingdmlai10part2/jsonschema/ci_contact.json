@@ -1,25 +1,25 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://localhost:8000/ci_contact.json",
+    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ci_contact.json",
     "title": "CI_Contact",
     "type": "object",
     "properties": {
         "phone": {
             "type": "array",
             "items": {
-                "$ref": "./ci_telephone.json"
+                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ci_telephone.json"
             }
         },
         "address": {
             "type": "array",
             "items": {
-                "$ref": "./ci_address.json"
+                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ci_address.json"
             }
         },
         "onlineResource": {
             "type": "array",
             "items": {
-                "$ref": "./ci_onlineResource.json"
+                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ci_onlineResource.json"
             }
         },
         "hoursOfService": {

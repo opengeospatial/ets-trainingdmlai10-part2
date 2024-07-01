@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://localhost:8000/ai_labelingProcedure.json",
+    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_labelingProcedure.json",
     "title": "AI_LabelingProcedure",
     "type": "object",
     "required": [
@@ -21,7 +21,7 @@
         "methods": {
             "type": "array",
             "items": {
-                "$ref": "./ai_labelingMethodCode.json"
+                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_labelingMethodCode.json"
             },
             "minItems": 1
         },

@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://localhost:8000/ai_classBalanceDegree.json",
+    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_classBalanceDegree.json",
     "title": "AI_ClassBalanceDegree",
     "type": "object",
     "required": [
@@ -17,15 +17,15 @@
             ]
         },
         "measure": {
-            "$ref": "./measureReference.json"
+            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/measureReference.json"
         },
         "evaluationMethod": {
-            "$ref": "./evaluationMethod.json"
+            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/evaluationMethod.json"
         },
         "result": {
             "type": "array",
             "items": {
-                "$ref": "./qualityResult.json"
+                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/qualityResult.json"
             },
             "minItems": 1
         }

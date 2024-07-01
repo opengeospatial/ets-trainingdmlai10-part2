@@ -1,9 +1,17 @@
 package org.opengis.cite.trainingdmlai10part2.trainingdata;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Set;
+
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
+
+import org.opengis.cite.trainingdmlai10part2.BaseJsonSchemaValidatorTest;
 import org.opengis.cite.trainingdmlai10part2.CommonFixture;
 import org.opengis.cite.trainingdmlai10part2.ErrorMessage;
 import org.opengis.cite.trainingdmlai10part2.ErrorMessageKeys;
@@ -12,25 +20,27 @@ import org.opengis.cite.validation.RelaxNGValidator;
 import org.opengis.cite.validation.ValidationErrorHandler;
 import org.testng.Assert;
 import org.testng.ITestContext;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.ValidationMessage;
 
 /**
  * Includes various tests of capability 1.
  */
 public class TrainingDataClassTests extends CommonFixture {
 
-    private Document testSubject;
-
     /**
      * Checks the behavior of the trim function.
      */
     @Test(description = "Implements ATC 1-2")
     public void trim() {
-        String str = "  foo   ";
-        Assert.assertTrue("foo".equals(str.trim()));
+        throw new SkipException("Not implemented yet");
     }
 
 }

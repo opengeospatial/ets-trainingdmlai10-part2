@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://localhost:8000/ex_extent.json",
+    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_extent.json",
     "title": "EX_Extent",
     "oneOf": [
         {
@@ -14,13 +14,13 @@
                     "items": {
                         "oneOf": [
                             {
-                                "$ref": "./ex_boundingPolygon.json"
+                                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_boundingPolygon.json"
                             },
                             {
-                                "$ref": "./ex_geographicBoundingBox.json"
+                                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_geographicBoundingBox.json"
                             },
                             {
-                                "$ref": "./ex_geographicDescription.json"
+                                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_geographicDescription.json"
                             }
                         ]
                     }
@@ -30,10 +30,10 @@
                     "items": {
                         "oneOf": [
                             {
-                                "$ref": "./ex_temporalExtent.json"
+                                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_temporalExtent.json"
                             },
                             {
-                                "$ref": "./ex_spatialTemporalExtent.json"
+                                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_spatialTemporalExtent.json"
                             }
                         ]
                     }
@@ -41,7 +41,7 @@
                 "verticalElement": {
                     "type": "array",
                     "items": {
-                        "$ref": "./ex_verticalExtent.json"
+                        "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_verticalExtent.json"
                     }
                 }
             }

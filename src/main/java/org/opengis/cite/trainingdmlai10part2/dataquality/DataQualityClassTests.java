@@ -12,6 +12,7 @@ import org.opengis.cite.validation.RelaxNGValidator;
 import org.opengis.cite.validation.ValidationErrorHandler;
 import org.testng.Assert;
 import org.testng.ITestContext;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -27,9 +28,7 @@ public class DataQualityClassTests extends CommonFixture {
      */
     @Test(description = "Implements ATC 1-2")
     public void trim() {
-        String str = "  foo   ";
-        Assert.assertTrue("foo".equals(str.trim()));
+        throw new SkipException("Not implemented yet");
     }
-
 
 }
