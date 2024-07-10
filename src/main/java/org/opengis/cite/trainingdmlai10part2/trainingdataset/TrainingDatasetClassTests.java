@@ -85,7 +85,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
      * Checks the behavior of the trim function.
      */
     @Test(description = "Implements AI TrainingDataset - TBA")
-    public void validateBySchema() {
+    public void validateByTrainingDatasetSchema() {
     
     	
     	if(!testSubject.isFile()) {

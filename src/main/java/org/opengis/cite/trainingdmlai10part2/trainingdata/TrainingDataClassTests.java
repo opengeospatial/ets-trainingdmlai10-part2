@@ -34,13 +34,104 @@ import com.networknt.schema.ValidationMessage;
  * Includes various tests of capability 1.
  */
 public class TrainingDataClassTests extends CommonFixture {
+	
+	private File testSubject;
 
+    /**
+     * Obtains the test subject from the ISuite context. The suite attribute
+     * {@link org.opengis.cite.trainingdmlai10part2.SuiteAttribute#TEST_SUBJECT} should
+     * evaluate to a DOM Document node.
+     * 
+     * @param testContext
+     *            The test (group) context.
+     */
+    @BeforeClass
+    public void obtainTestSubject(ITestContext testContext) {
+
+        Object obj = testContext.getSuite().getAttribute(
+        		SuiteAttribute.TEST_SUBJECT.getName());
+  
+        this.testSubject = (File) obj;        
+        
+    }
+
+    /**
+     * Sets the test subject. This method is intended to facilitate unit
+     * testing.
+     *
+     * @param testSubject A Document node representing the test subject or
+     * metadata about it.
+     */
+    public void setTestSubject(File testSubject) {
+        this.testSubject = testSubject;
+    }	
+	
     /**
      * Checks the behavior of the trim function.
      */
-    @Test(description = "Implements ATC 1-2")
-    public void trim() {
-        throw new SkipException("Not implemented yet");
+    @Test(description = "Implements AI TrainingData - TBA")
+    public void validateByTrainingDataSchema() {
+    
+    	
+    	if(!testSubject.isFile()) {
+    		Assert.assertTrue(testSubject.isFile(),"No file selected. ");
+    	}
+    	
+    	BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+	      String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_eoTrainingData.json";
+	  	
+	        boolean valid = false;
+	        StringBuffer sb = new StringBuffer();
+
+	        InputStream inputStream = tester.getClass()
+	                .getResourceAsStream(schemaToApply);
+		
+	        try {
+		      JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
+		          JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
+
+		          schema.initializeValidators(); 
+		          
+		          JsonNode node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
+		          
+		          
+		
+		        
+	
+				
+				if(node.get("data").size()>0)
+				{
+
+					if(node.get("data").get(0).getClass().toString().endsWith("com.fasterxml.jackson.databind.node.ObjectNode"))
+					{
+						for(int j=0; j < 3; j++)
+						{
+						
+							Set<ValidationMessage> errors = schema.validate(node.get("data").get(j));
+							Iterator it = errors.iterator();
+							while(it.hasNext())
+							{
+								sb.append("Item "+j+" has error "+it.next()+".\n");
+				
+							}
+						
+						}
+						
+					}
+
+				}
+				
+			    
+				
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	        
+	        System.out.println("CHK "+this.getClass().getName()+" RESULT "+sb.toString()+" = "+(sb.toString().length()==0));
+
+	        Assert.assertTrue(sb.toString().length()==0,sb.toString());
     }
 
 }
