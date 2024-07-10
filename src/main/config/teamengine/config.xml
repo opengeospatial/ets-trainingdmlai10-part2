@@ -15,9 +15,6 @@
         <description>Describe scope of testing.</description>
         <BasicConformanceClasses>
           <conformanceClass>AI TrainingDataset</conformanceClass>
-          <conformanceClass>AI TrainingData</conformanceClass>
-          <conformanceClass>AI Task</conformanceClass>
-          <conformanceClass>AI Label</conformanceClass>
         </BasicConformanceClasses>
       </suite>
       <revision>

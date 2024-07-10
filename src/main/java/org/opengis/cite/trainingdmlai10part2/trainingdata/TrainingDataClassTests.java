@@ -94,32 +94,38 @@ public class TrainingDataClassTests extends CommonFixture {
 		          
 		          JsonNode node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
 		          
-		          
-		
-		        
-	
 				
-				if(node.get("data").size()>0)
-				{
-
-					if(node.get("data").get(0).getClass().toString().endsWith("com.fasterxml.jackson.databind.node.ObjectNode"))
+			        String arrayToFetch = "data";
+					
+					if(node.get(arrayToFetch).size()>0)
 					{
-						for(int j=0; j < 3; j++)
-						{
-						
-							Set<ValidationMessage> errors = schema.validate(node.get("data").get(j));
-							Iterator it = errors.iterator();
-							while(it.hasNext())
+						for(int indexToFetch=0; indexToFetch < node.get(arrayToFetch).size(); indexToFetch++) {
+
+							if(node.get(arrayToFetch).get(indexToFetch).getClass().toString().endsWith("com.fasterxml.jackson.databind.node.ObjectNode"))
 							{
-								sb.append("Item "+j+" has error "+it.next()+".\n");
-				
-							}
+		
+								
+									
+									Set<ValidationMessage> errors = schema.validate(node.get(arrayToFetch).get(indexToFetch));
+									Iterator it = errors.iterator();
+									while(it.hasNext())
+									{
+										sb.append("Item "+indexToFetch+" has error "+it.next()+".\n");
 						
-						}
+									}
+								
+								
+								
+							}
+					   }
+
+					}
+					else {  //if there is no data element
+						
+						
+						Assert.fail("There was no 'data' array found in the file.");
 						
 					}
-
-				}
 				
 			    
 				
