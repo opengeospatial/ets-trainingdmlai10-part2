@@ -14,7 +14,7 @@
   <version>0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Training DML AI Part 2 version 1.0 Conformance Test Suite</name>
+  <name>Training Data Markup Language for Artificial Intelligence Part 2 version 1.0 Conformance Test Suite</name>
   <description>Describe purpose of test suite.</description>
   <url>http://opengeospatial.github.io/ets-trainingdmlai10-part2/</url>
   <licenses>
