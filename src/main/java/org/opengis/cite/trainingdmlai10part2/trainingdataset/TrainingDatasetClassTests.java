@@ -237,9 +237,8 @@ public class TrainingDatasetClassTests extends CommonFixture {
 	
 				}
 				
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
+			sb.append(e.getMessage());	
 			e.printStackTrace();
 		}
 	        
