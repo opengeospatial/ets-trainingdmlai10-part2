@@ -28,18 +28,12 @@
 	  <ctl:code>
         <xsl:variable name="form-data">
            <ctl:form method="POST" width="800" height="600" xmlns="http://www.w3.org/1999/xhtml">
-             <h2>Training DML AI Part 2 version 1.0 Conformance Test Suite</h2>
+             <h2>OGC Training Data Markup Language for Artificial Intelligence (TrainingDML-AI) Part 2: JSON Encoding Standard version 1.0 Conformance Test Suite</h2>
              <div style="background:#F0F8FF" bgcolor="#F0F8FF">
-               <p>The implementation under test (IUT) is checked against the following specifications:</p>
+               <p>The implementation under test (IUT) is checked against the following specification:</p>
                <ul>
-                 <li><a href="http://www.w3.org/TR/xml/">Extensible Markup Language (XML) 1.0</a>, 
-				 Fifth Edition</li>
-				 <li><a href="http://www.w3.org/TR/xmlbase/">XML Base</a>, Second Edition</li>
-               </ul>
-               <p>Two conformance levels are defined:</p>
-               <ul>
-                 <li>Level 1</li>
-                 <li>Level 2</li>
+                 <li><a href="https://docs.ogc.org/is/24-006r1/24-006r1.html">OGC Training Data Markup Language for Artificial Intelligence (TrainingDML-AI) Part 2: JSON Encoding Standard</a>, 
+				 version 1.0.0</li>
                </ul>
              </div>
              <fieldset style="background:#ccffff">
@@ -50,7 +44,7 @@
                  <label for="uri">
                    <h4 style="margin-bottom: 0.5em">Location of IUT (absolute http: or file: URI)</h4>
                  </label>
-                 <input id="uri" name="uri" size="128" type="text" value="http://www.w3schools.com/xml/note.xml" />
+                 <input id="uri" name="uri" size="128" type="text" value="" />
                </p>
                <p>
                  <label for="doc">
