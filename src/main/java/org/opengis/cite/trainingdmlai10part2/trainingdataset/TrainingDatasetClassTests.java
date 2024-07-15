@@ -183,18 +183,32 @@ public class TrainingDatasetClassTests extends CommonFixture {
     	
     }    
     
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements Abstract Test 12 (/conf/aitrainingdataset/metricsinliterature)")
+    public void validateAgainstMetricsInLiteratureSchema() {
+    	throw new SkipException("Not implemented yet.");
+    	
+    }      
     
 
     /**
      * Checks the behavior of the trim function.
      */
-    @Test(description = "Implements AI TrainingDataset - TBA",priority = -1)
+    @Test(description = "Implements Abstract Test 11 (/conf/aitrainingdataset/trainingdataset) and Abstract Test 13 (/conf/aitrainingdataset/eotrainingdataset)",priority = -1)
     public void validateByTrainingDatasetSchema() {
     
     	
     	if(!testSubject.isFile()) {
     		Assert.assertTrue(testSubject.isFile(),"No file selected. ");
     	}
+    	
+    	
+    	
+    	//TODO - check whether is AI_TrainingDataset or AI_EOTrainingDataset.
+    	//TODO - if is AI_TrainingDataset then use ai_TrainingDataset.json.
+    	//TODO - if is AI_EOTrainingDataset then use ai_eoTrainingDataset.json.   	
     	
     	BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 	      String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_eoTrainingDataset.json";
