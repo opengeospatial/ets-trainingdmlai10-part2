@@ -132,9 +132,7 @@ public class TaskClassTests extends CommonFixture {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	        
-	        System.out.println("CHK "+this.getClass().getName()+" RESULT "+sb.toString()+" = "+(sb.toString().length()==0));
-
+	
 	        Assert.assertTrue(sb.toString().length()==0,sb.toString());
     }
 

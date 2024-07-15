@@ -50,7 +50,7 @@ public class DataQualityClassTests extends CommonFixture {
 
         Object obj = testContext.getSuite().getAttribute(
         		SuiteAttribute.TEST_SUBJECT.getName());
-  
+          
         this.testSubject = (File) obj;        
         
     }
@@ -70,7 +70,7 @@ public class DataQualityClassTests extends CommonFixture {
      * Checks the behavior of the trim function.
      */
     @Test(description = "Implements AI Task - TBA")
-    public void validateByTaskSchema() {
+    public void validateByDataQualitySchema() {
     
     	
     	if(!testSubject.isFile()) {
@@ -96,45 +96,54 @@ public class DataQualityClassTests extends CommonFixture {
 		        
 		        String arrayToFetch = "quality";
 
-				
-				if(node.get(arrayToFetch).size()>0)
-				{
-					for(int indexToFetch=0; indexToFetch < node.get(arrayToFetch).size(); indexToFetch++) {
+		        
 
-						if(node.get(arrayToFetch).get(indexToFetch).getClass().toString().endsWith("com.fasterxml.jackson.databind.node.ObjectNode"))
-						{
+		        
+			
+					if(node.has(arrayToFetch))
+					{
 	
+			
+						
+						for(int indexToFetch=0; indexToFetch < node.get(arrayToFetch).size(); indexToFetch++) {
 							
-								
-								Set<ValidationMessage> errors = schema.validate(node.get(arrayToFetch).get(indexToFetch));
-								Iterator it = errors.iterator();
-								while(it.hasNext())
-								{
-									sb.append("Item "+indexToFetch+" has error "+it.next()+".\n");
 					
-								}
-							
-							
-							
-						}
-				   }
-
-				}
-				else {
-					Assert.fail("There was no 'quality' array found in the file.");
-				}
+	
+							if(node.get(arrayToFetch).get(indexToFetch).getClass().toString().endsWith("com.fasterxml.jackson.databind.node.ObjectNode"))
+							{
+		
+						
+									
+									Set<ValidationMessage> errors = schema.validate(node.get(arrayToFetch).get(indexToFetch));
+									Iterator it = errors.iterator();
+									while(it.hasNext())
+									{
+										sb.append("Item "+indexToFetch+" has error "+it.next()+".\n");
+						
+									}
+								
+								
+								
+							}
+							else {
+								sb.append("Item in array not an JSON Object. ");
+							}
+					   }
+	
+					}
+					else {
+						sb.append("There was no 'quality' array found in the file. ");
+					}
+		        
 				
 			    
-				
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+		} catch (Exception e) {
+			sb.append(e.getMessage());
 		}
-	        
-	        System.out.println("CHK "+this.getClass().getName()+" RESULT "+sb.toString()+" = "+(sb.toString().length()==0));
 
 	        Assert.assertTrue(sb.toString().length()==0,sb.toString());
+	      
     }
 
 }
