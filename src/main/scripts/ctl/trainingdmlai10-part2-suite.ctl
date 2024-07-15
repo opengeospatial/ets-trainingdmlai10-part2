@@ -18,7 +18,7 @@
 	</ctl:function>
 
    <ctl:suite name="tns:ets-trainingdmlai10-part2-${version}">
-     <ctl:title>Training DML AI Part 2 version 1.0 Conformance Test Suite</ctl:title>
+     <ctl:title>OGC Training Data Markup Language for Artificial Intelligence (TrainingDML-AI) Part 2: JSON Encoding Standard version 1.0 Conformance Test Suite</ctl:title>
      <ctl:description>Describe scope of testing.</ctl:description>
      <ctl:starting-test>tns:Main</ctl:starting-test>
    </ctl:suite>
