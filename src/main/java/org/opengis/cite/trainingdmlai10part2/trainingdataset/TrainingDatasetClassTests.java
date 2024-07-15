@@ -203,32 +203,45 @@ public class TrainingDatasetClassTests extends CommonFixture {
     	if(!testSubject.isFile()) {
     		Assert.assertTrue(testSubject.isFile(),"No file selected. ");
     	}
-    	
-    	
-    	
-    	//TODO - check whether is AI_TrainingDataset or AI_EOTrainingDataset.
-    	//TODO - if is AI_TrainingDataset then use ai_TrainingDataset.json.
-    	//TODO - if is AI_EOTrainingDataset then use ai_eoTrainingDataset.json.   	
+    		
     	
     	BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
-	      String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_eoTrainingDataset.json";
+	      
 	  	
 	        boolean valid = false;
 	        StringBuffer sb = new StringBuffer();
 
-	        InputStream inputStream = tester.getClass()
-	                .getResourceAsStream(schemaToApply);
+	        
 		
 	        try {
-		      JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
-		          JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
-
-		          schema.initializeValidators(); 
+	          	  Set<ValidationMessage> errors = null;
 		          
 		          JsonNode node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
-		          Set<ValidationMessage> errors = schema.validate(node);
-		        
-		
+		          
+		          if(node.has("type"))
+		          {
+		        	  if(node.get("type").asText().equals("AI_EOTrainingDataset")) 
+		        	  {
+				          String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_eoTrainingDataset.json";
+				          InputStream inputStream = tester.getClass().getResourceAsStream(schemaToApply);
+					      JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
+				          JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
+				          schema.initializeValidators(); 
+				          errors = schema.validate(node);
+		        	  }
+		        	  else if(node.get("type").asText().equals("AI_AbstractTrainingDataset"))
+		        	  {
+				          String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_trainingDataset.json";
+				          InputStream inputStream = tester.getClass().getResourceAsStream(schemaToApply);
+					      JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
+				          JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
+				          schema.initializeValidators(); 
+				          errors = schema.validate(node);
+		        	  }
+		          }
+		          else {
+		        	  sb.append("No 'type' key found in the root object. ");
+		          }
 		        
 				Iterator it = errors.iterator();
 				while(it.hasNext())
