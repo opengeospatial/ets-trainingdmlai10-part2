@@ -238,6 +238,9 @@ public class TrainingDatasetClassTests extends CommonFixture {
 				          schema.initializeValidators(); 
 				          errors = schema.validate(node);
 		        	  }
+			          else {
+			        	  sb.append("No recognised type in the root object. ");
+			          }
 		          }
 		          else {
 		        	  sb.append("No 'type' key found in the root object. ");
