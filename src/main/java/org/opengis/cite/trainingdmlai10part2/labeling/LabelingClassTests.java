@@ -122,7 +122,7 @@ public class LabelingClassTests extends CommonFixture {
 
 				}
 				else {
-					Assert.fail("There was no 'tasks' array found in the file.");
+					Assert.fail("There was no '"+arrayToFetch+"' array found in the file.");
 				}
 				
 			    

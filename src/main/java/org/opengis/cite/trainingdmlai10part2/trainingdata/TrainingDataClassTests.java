@@ -123,7 +123,7 @@ public class TrainingDataClassTests extends CommonFixture {
 					else {  //if there is no data element
 						
 						
-						Assert.fail("There was no 'data' array found in the file.");
+						Assert.fail("There was no '"+arrayToFetch+"' array found in the file.");
 						
 					}
 				
