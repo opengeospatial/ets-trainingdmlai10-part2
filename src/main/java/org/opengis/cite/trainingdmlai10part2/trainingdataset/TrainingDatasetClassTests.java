@@ -22,6 +22,7 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -80,11 +81,114 @@ public class TrainingDatasetClassTests extends CommonFixture {
         this.testSubject = testSubject;
     }
 
+    
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements Abstract Test 1 (/conf/base/jsonbasetype/json)")
+    public void verifyDocumentIsJSON() {
+    	if(!testSubject.isFile()) {
+    		Assert.assertTrue(testSubject.isFile(),"No file selected. ");
+    	}
+    	JsonNode node = null;
+    	BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+    	try {
+			node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+			e.printStackTrace();
+		}
+    	Assert.assertTrue(node!=null,"Invalid JSON file. ");
+    }
+    
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements Abstract Test 2 (/conf/base/jsonbasetype/datetime)")
+    public void validateDateTimeValues() {
+    	throw new SkipException("Not implemented yet.");
+    	
+    }  
+    
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements Abstract Test 3 (/conf/base/jsonbasetype/namedvalue)")
+    public void ValidateAgainstNamedValueSchema() {
+    	throw new SkipException("Not implemented yet.");
+    	
+    }     
+    
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements Abstract Test 4 (/conf/base/jsonbasetype/url)")
+    public void VerifyThatURLsAreValid() {
+    	throw new SkipException("Not implemented yet.");
+    	
+    }     
+        
+    
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements Abstract Test 5 (/conf/base/isometadatatype/band)")
+    public void validateAgainstBandSchema() {
+    	throw new SkipException("Not implemented yet.");
+    	
+    }
+    
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements Abstract Test 6 (/conf/base/isometadatatype/extent)")
+    public void ValidateAgainstExtentSchema() {
+    	throw new SkipException("Not implemented yet.");
+    	
+    }
+    
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements Abstract Test 7 (/conf/base/isometadatatype/citation)")
+    public void ValidateAgainstCitationSchema() {
+    	throw new SkipException("Not implemented yet.");
+    	
+    }
+    
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements Abstract Test 8 (/conf/base/isometadatatype/scope)")
+    public void ValidateAgainstScopeSchema() {
+    	throw new SkipException("Not implemented yet.");
+    	
+    }
+    
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements Abstract Test 9 (/conf/base/isoqualitytype/element)")
+    public void ValidateAgainstElementQualitySchema() {
+    	throw new SkipException("Not implemented yet.");
+    	
+    }
+    
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements Abstract Test 10 (/conf/base/geospatialtype/feature)")
+    public void validateAgainstFeatureSchema() {
+    	throw new SkipException("Not implemented yet.");
+    	
+    }    
+    
+    
 
     /**
      * Checks the behavior of the trim function.
      */
-    @Test(description = "Implements AI TrainingDataset - TBA")
+    @Test(description = "Implements AI TrainingDataset - TBA",priority = -1)
     public void validateByTrainingDatasetSchema() {
     
     	

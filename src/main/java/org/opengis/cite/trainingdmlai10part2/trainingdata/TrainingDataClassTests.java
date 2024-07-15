@@ -97,7 +97,7 @@ public class TrainingDataClassTests extends CommonFixture {
 				
 			        String arrayToFetch = "data";
 					
-					if(node.get(arrayToFetch).size()>0)
+					if(node.has(arrayToFetch))
 					{
 						for(int indexToFetch=0; indexToFetch < node.get(arrayToFetch).size(); indexToFetch++) {
 

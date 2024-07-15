@@ -70,7 +70,7 @@ public class LabelingClassTests extends CommonFixture {
     /**
      * Checks the behavior of the trim function.
      */
-    @Test(description = "Implements AI Task - TBA")
+    @Test(description = "Implements AI Labeling - TBA")
     public void validateByLabelingSchema() {
     
     	

@@ -69,7 +69,7 @@ public class DataQualityClassTests extends CommonFixture {
     /**
      * Checks the behavior of the trim function.
      */
-    @Test(description = "Implements AI Task - TBA")
+    @Test(description = "Implements AI_DataQuality")
     public void validateByDataQualitySchema() {
     
     	
@@ -132,7 +132,7 @@ public class DataQualityClassTests extends CommonFixture {
 	
 					}
 					else {
-						sb.append("There was no 'quality' array found in the file. ");
+						sb.append("There was no '"+arrayToFetch+"' array found in the file. ");
 					}
 		        
 				

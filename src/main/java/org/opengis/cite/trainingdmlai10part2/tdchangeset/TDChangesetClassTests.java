@@ -69,8 +69,8 @@ public class TDChangesetClassTests extends CommonFixture {
     /**
      * Checks the behavior of the trim function.
      */
-    @Test(description = "Implements AI Task - TBA")
-    public void validateByLabelingSchema() {
+    @Test(description = "Implements AI TDChangesets - TBA")
+    public void validateByTrainingDatasetChangesetsSchema() {
     
     	
     	if(!testSubject.isFile()) {
@@ -78,7 +78,7 @@ public class TDChangesetClassTests extends CommonFixture {
     	}
     	
     	BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
-	      String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_labeling.json";
+	      String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_tdChangeset.json";
 	  	
 	        boolean valid = false;
 	        StringBuffer sb = new StringBuffer();
@@ -94,10 +94,10 @@ public class TDChangesetClassTests extends CommonFixture {
 		          
 		          JsonNode node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
 		        
-		        String arrayToFetch = "labeling";
+		        String arrayToFetch = "changesets";
 
 				
-				if(node.get(arrayToFetch).size()>0)
+				if(node.has(arrayToFetch))
 				{
 					for(int indexToFetch=0; indexToFetch < node.get(arrayToFetch).size(); indexToFetch++) {
 
