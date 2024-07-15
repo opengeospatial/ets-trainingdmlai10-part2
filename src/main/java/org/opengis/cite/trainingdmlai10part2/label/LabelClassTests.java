@@ -133,6 +133,9 @@ public class LabelClassTests extends CommonFixture {
 							else if(labelType.equals("AI_PixelLabel")) {
 								   schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_pixelLabel.json";
 						    }	
+							else if(labelType.equals("AI_AbstractLabel")) {
+								   schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_label.json";
+						    }							
 							else {
 								   Assert.fail("Label at data item "+i+" did not have a recognized type.");
 						    }
