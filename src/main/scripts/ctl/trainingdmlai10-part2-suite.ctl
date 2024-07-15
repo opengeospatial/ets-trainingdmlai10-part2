@@ -30,11 +30,29 @@
            <ctl:form method="POST" width="800" height="600" xmlns="http://www.w3.org/1999/xhtml">
              <h2>OGC Training Data Markup Language for Artificial Intelligence (TrainingDML-AI) Part 2: JSON Encoding Standard version 1.0 Conformance Test Suite</h2>
              <div style="background:#F0F8FF" bgcolor="#F0F8FF">
-               <p>The implementation under test (IUT) is checked against the following specification:</p>
+               <p>The implementation under test (IUT) is checked against the following Standard:</p>
                <ul>
                  <li><a href="https://docs.ogc.org/is/24-006r1/24-006r1.html">OGC Training Data Markup Language for Artificial Intelligence (TrainingDML-AI) Part 2: JSON Encoding Standard</a>, 
 				 version 1.0.0</li>
                </ul>
+               
+<p>The conformance classes tested by this Executable Test Suite are:</p>
+
+<ul>
+<li>AI_TrainingDataset</li>
+<li>AI_TrainingData</li>
+<li>AI_Task</li>
+<li>AI_Label</li>
+<li>AI_DataQuality</li>
+<li>AI_Labeling</li>
+<li>AI_TDChangeset</li>
+</ul>                 
+               
+ <p>Only the AI_TrainingDataset conformance class is mandatory. All other conformance classes are optional. In the case where a conformance class has a dependency on another conformance class, that conformance class should also be implemented. </p>
+
+
+               
+               <p> </p>
              </div>
              <fieldset style="background:#ccffff">
                <legend style="font-family: sans-serif; color: #000099; 
