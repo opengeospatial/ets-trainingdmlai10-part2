@@ -35,158 +35,116 @@ import com.networknt.schema.ValidationMessage;
  */
 public class LabelClassTests extends CommonFixture {
 
-	private File testSubject;
+    private File testSubject;
 
-	/**
-	 * Obtains the test subject from the ISuite context. The suite attribute
-	 * {@link org.opengis.cite.trainingdmlai10part2.SuiteAttribute#TEST_SUBJECT}
-	 * should evaluate to a DOM Document node.
-	 * 
-	 * @param testContext The test (group) context.
-	 */
-	@BeforeClass
-	public void obtainTestSubject(ITestContext testContext) {
+    /**
+     * Obtains the test subject from the ISuite context. The suite attribute
+     * {@link org.opengis.cite.trainingdmlai10part2.SuiteAttribute#TEST_SUBJECT}
+     * should evaluate to a DOM Document node.
+     *
+     * @param testContext The test (group) context.
+     */
+    @BeforeClass
+    public void obtainTestSubject(ITestContext testContext) {
+        Object obj = testContext.getSuite().getAttribute(SuiteAttribute.TEST_SUBJECT.getName());
+        this.testSubject = (File) obj;
+    }
 
-		Object obj = testContext.getSuite().getAttribute(SuiteAttribute.TEST_SUBJECT.getName());
+    /**
+     * Sets the test subject. This method is intended to facilitate unit testing.
+     *
+     * @param testSubject A Document node representing the test subject or metadata
+     *                    about it.
+     */
+    public void setTestSubject(File testSubject) {
+        this.testSubject = testSubject;
+    }
 
-		this.testSubject = (File) obj;
+    /**
+     * Checks the behavior of the trim function.
+     */
+    @Test(description = "Implements AI Label - TBA")
+    public void validateByLabelSchema() {
 
-	}
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
-	/**
-	 * Sets the test subject. This method is intended to facilitate unit testing.
-	 *
-	 * @param testSubject A Document node representing the test subject or metadata
-	 *                    about it.
-	 */
-	public void setTestSubject(File testSubject) {
-		this.testSubject = testSubject;
-	}
+        StringBuffer sb = new StringBuffer();
+        boolean foundAtLeastOneLabel = false;
 
-	/**
-	 * Checks the behavior of the trim function.
-	 */
-	@Test(description = "Implements AI Label - TBA")
-	public void validateByLabelSchema() {
+        try {
+            boolean valid = false;
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+            JsonNode node = tester.getJsonNodeFromStringContent(
+                    tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
 
-		if (!testSubject.isFile()) {
-			Assert.assertTrue(testSubject.isFile(), "No file selected. ");
-		}
+            String arrayToFetch = "data";
 
-		StringBuffer sb = new StringBuffer();
-		
-		boolean foundAtLeastOneLabel = false;
+            //-----Confirm that there is at least one label-----------
 
-		try {
+            if (node.get(arrayToFetch).size() > 0) {
+                for (int i = 0; i < node.get(arrayToFetch).size(); i++) {
+                    if (node.get(arrayToFetch).get(i).getClass().toString()
+                            .endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+                        if (node.get(arrayToFetch).get(i).get("labels").size() > 0) {
+                            foundAtLeastOneLabel = true;
+                        }
+                    }
+                }
+            }
+            //----------------
 
-			boolean valid = false;
+            if (node.get(arrayToFetch).size() > 0) {
+                for (int i = 0; i < node.get(arrayToFetch).size(); i++) {
+                    if (!(node.get(arrayToFetch).get(i).getClass().toString()
+                            .endsWith("com.fasterxml.jackson.databind.node.ObjectNode"))) {
+                        continue;
+                    }
+                    for (int indexToFetch = 0; indexToFetch < node.get(arrayToFetch).get(i).get("labels")
+                            .size(); indexToFetch++) {
+                        String labelType = node.get(arrayToFetch).get(i).get("labels").get(indexToFetch).get("type").asText();
+                        String schemaToApply = null;
 
-			BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
-			JsonNode node = tester.getJsonNodeFromStringContent(
-					tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
+                        if (labelType.equals("AI_SceneLabel")) {
+                            schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_sceneLabel.json";
+                        } else if (labelType.equals("AI_ObjectLabel")) {
+                            schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_objectLabel.json";
+                        } else if (labelType.equals("AI_PixelLabel")) {
+                            schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_pixelLabel.json";
+                        } else if (labelType.equals("AI_AbstractLabel")) {
+                            schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_label.json";
+                        } else {
+                            Assert.fail("Label at data item " + i + " did not have a recognized type.");
+                        }
 
-			String arrayToFetch = "data";
-			
-			
-			//-----Confirm that there is at least one label-----------
-			
-			if (node.get(arrayToFetch).size() > 0) {
-				for (int i = 0; i < node.get(arrayToFetch).size(); i++) {
+                        InputStream inputStream = tester.getClass().getResourceAsStream(schemaToApply);
 
-					if (node.get(arrayToFetch).get(i).getClass().toString()
-							.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
-						if (node.get(arrayToFetch).get(i).get("labels").size()>0) {
-							foundAtLeastOneLabel = true;
-						}
-						
-				}
-			  }
-			}
-			
-			//----------------
-				
+                        JsonNode schemaNode = tester
+                                .getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
+                        JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
 
-			if (node.get(arrayToFetch).size() > 0) {
-				for (int i = 0; i < node.get(arrayToFetch).size(); i++) {
+                        schema.initializeValidators();
+                        Set<ValidationMessage> errors =
+                                schema.validate(node.get(arrayToFetch).get(i).get("labels").get(indexToFetch));
 
-					if (node.get(arrayToFetch).get(i).getClass().toString()
-							.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
-	
+                        Iterator it = errors.iterator();
+                        while (it.hasNext()) {
+                            sb.append("Item " + indexToFetch + " has error " + it.next() + ".\n");
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
 
-						for (int indexToFetch = 0; indexToFetch < node.get(arrayToFetch).get(i).get("labels")
-								.size(); indexToFetch++) {
-
-							
-
-							String labelType = node.get(arrayToFetch).get(i).get("labels").get(indexToFetch).get("type").asText();
-							
-							String schemaToApply = null;
-							
-
-							
-							if(labelType.equals("AI_SceneLabel")) {
-							   schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_sceneLabel.json";
-							}
-							else if(labelType.equals("AI_ObjectLabel")) {
-								   schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_objectLabel.json";
-						    }
-							else if(labelType.equals("AI_PixelLabel")) {
-								   schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_pixelLabel.json";
-						    }	
-							else if(labelType.equals("AI_AbstractLabel")) {
-								   schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_label.json";
-						    }							
-							else {
-								   Assert.fail("Label at data item "+i+" did not have a recognized type.");
-						    }
-	
-		
-							
-							InputStream inputStream = tester.getClass().getResourceAsStream(schemaToApply);
-
-							
-							JsonNode schemaNode = tester
-									.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
-	
-							
-							JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
-
-							
-							schema.initializeValidators();
-
-							
-							 Set<ValidationMessage> errors =
-							 schema.validate(node.get(arrayToFetch).get(i).get("labels").get(indexToFetch)); 
-	
-							 
-							 Iterator it = errors.iterator(); while(it.hasNext()) {
-
-								 
-							   sb.append("Item "+indexToFetch+" has error "+it.next()+".\n");
-							   
-							 }
-
-						}
-
-					}
-				}
-
-			}
-
-		} catch (Exception e) {
-			sb.append(e.getMessage());	
-			e.printStackTrace();
-		}
-		
-		if(foundAtLeastOneLabel)
-		{
-	
-			Assert.assertTrue(sb.toString().length() == 0, sb.toString());
-		
-	    }
-		else {
-			Assert.fail("None of the data items contained labels.");
-		}
-	}
+        if (foundAtLeastOneLabel) {
+            Assert.assertTrue(sb.toString().length() == 0, sb.toString());
+        } else {
+            Assert.fail("None of the data items contained labels.");
+        }
+    }
 
 }

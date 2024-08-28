@@ -15,14 +15,13 @@ import com.networknt.schema.SpecVersion;
 import com.networknt.schema.SpecVersionDetector;
 
 public class BaseJsonSchemaValidatorTest {
-	public final int DEFAULT_BUFFER_SIZE = 8192;
+    public final int DEFAULT_BUFFER_SIZE = 8192;
     private ObjectMapper mapper = new ObjectMapper();
 
     //from https://github.com/networknt/json-schema-validator/blob/master/doc/quickstart.md
-    
-    public JsonNode getJsonNodeFromClasspath(String name) throws IOException {
+    public JsonNode getJsonNodeFromClasspath(String fileName) throws IOException {
         InputStream is1 = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream(name);
+                .getResourceAsStream(fileName);
         return mapper.readTree(is1);
     }
 
@@ -56,14 +55,28 @@ public class BaseJsonSchemaValidatorTest {
         return factory.getSchema(jsonNode);
     }
 
-    // Automatically detect version for given JsonNode
+    /**
+     * Get a JSON schema by providing a JSON node.
+     * Automatically detect version for given JsonNode
+     *
+     * @param jsonNode
+     * @return
+     */
     public JsonSchema getJsonSchemaFromJsonNodeAutomaticVersion(JsonNode jsonNode) {
         JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersionDetector.detect(jsonNode));
         return factory.getSchema(jsonNode);
     }
-    // from https://mkyong.com/java/how-to-convert-inputstream-to-string-in-java/
-    public String otherConvertInputStreamToString(InputStream is) throws IOException {
 
+    // from https://mkyong.com/java/how-to-convert-inputstream-to-string-in-java/
+
+    /**
+     * Converts an InputStream to a String with buffering.
+     *
+     * @param is
+     * @return
+     * @throws IOException
+     */
+    public String otherConvertInputStreamToString(InputStream is) throws IOException {
         ByteArrayOutputStream result = new ByteArrayOutputStream();
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         int length;
@@ -71,10 +84,6 @@ public class BaseJsonSchemaValidatorTest {
             result.write(buffer, 0, length);
         }
 
-
-
         return result.toString("UTF-8");
-
-
-    }	
+    }
 }

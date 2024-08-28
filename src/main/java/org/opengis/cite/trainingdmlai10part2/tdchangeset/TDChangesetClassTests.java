@@ -35,24 +35,22 @@ import com.networknt.schema.ValidationMessage;
  */
 public class TDChangesetClassTests extends CommonFixture {
 
-	private File testSubject;
+    private File testSubject;
 
     /**
      * Obtains the test subject from the ISuite context. The suite attribute
      * {@link org.opengis.cite.trainingdmlai10part2.SuiteAttribute#TEST_SUBJECT} should
      * evaluate to a DOM Document node.
-     * 
-     * @param testContext
-     *            The test (group) context.
+     *
+     * @param testContext The test (group) context.
      */
     @BeforeClass
     public void obtainTestSubject(ITestContext testContext) {
 
         Object obj = testContext.getSuite().getAttribute(
-        		SuiteAttribute.TEST_SUBJECT.getName());
-  
-        this.testSubject = (File) obj;        
-        
+                SuiteAttribute.TEST_SUBJECT.getName());
+
+        this.testSubject = (File) obj;
     }
 
     /**
@@ -60,77 +58,60 @@ public class TDChangesetClassTests extends CommonFixture {
      * testing.
      *
      * @param testSubject A Document node representing the test subject or
-     * metadata about it.
+     *                    metadata about it.
      */
     public void setTestSubject(File testSubject) {
         this.testSubject = testSubject;
-    }		
-	
+    }
+
     /**
      * Checks the behavior of the trim function.
      */
     @Test(description = "Implements AI TDChangesets - TBA")
     public void validateByTrainingDatasetChangesetsSchema() {
-    
-    	
-    	if(!testSubject.isFile()) {
-    		Assert.assertTrue(testSubject.isFile(),"No file selected. ");
-    	}
-    	
-    	BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
-	      String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_tdChangeset.json";
-	  	
-	        boolean valid = false;
-	        StringBuffer sb = new StringBuffer();
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
-	        InputStream inputStream = tester.getClass()
-	                .getResourceAsStream(schemaToApply);
-		
-	        try {
-		      JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
-		          JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
+        BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+        String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_tdChangeset.json";
 
-		          schema.initializeValidators(); 
-		          
-		          JsonNode node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
-		        
-		        String arrayToFetch = "changesets";
+        boolean valid = false;
+        StringBuffer sb = new StringBuffer();
 
-				
-				if(node.has(arrayToFetch))
-				{
-					for(int indexToFetch=0; indexToFetch < node.get(arrayToFetch).size(); indexToFetch++) {
+        InputStream inputStream = tester.getClass()
+                .getResourceAsStream(schemaToApply);
 
-						if(node.get(arrayToFetch).get(indexToFetch).getClass().toString().endsWith("com.fasterxml.jackson.databind.node.ObjectNode"))
-						{
-	
-							
-								
-								Set<ValidationMessage> errors = schema.validate(node.get(arrayToFetch).get(indexToFetch));
-								Iterator it = errors.iterator();
-								while(it.hasNext())
-								{
-									sb.append("Item "+indexToFetch+" has error "+it.next()+".\n");
-					
-								}
-							
-							
-							
-						}
-				   }
+        try {
+            JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
+            JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
 
-				}
-				else {
-					Assert.fail("There was no '"+arrayToFetch+"' array found in the file.");
-				}
-				
-			    
-				
-		} catch (Exception e) {
-			sb.append(e.getMessage());	
-			e.printStackTrace();
-		}
-	
-	        Assert.assertTrue(sb.toString().length()==0,sb.toString());
+            schema.initializeValidators();
+
+            JsonNode node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
+
+            String arrayToFetch = "changesets";
+
+
+            if (node.has(arrayToFetch)) {
+                for (int indexToFetch = 0; indexToFetch < node.get(arrayToFetch).size(); indexToFetch++) {
+                    if (!(node.get(arrayToFetch).get(indexToFetch).getClass().toString().endsWith("com.fasterxml.jackson.databind.node.ObjectNode")))
+                        continue;
+
+                    Set<ValidationMessage> errors = schema.validate(node.get(arrayToFetch).get(indexToFetch));
+                    Iterator it = errors.iterator();
+                    while (it.hasNext()) {
+                        sb.append("Item " + indexToFetch + " has error " + it.next() + ".\n");
+                    }
+                }
+            } else {
+                Assert.fail("There was no '" + arrayToFetch + "' array found in the file.");
+            }
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 }

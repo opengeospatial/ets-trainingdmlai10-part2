@@ -35,24 +35,19 @@ import com.networknt.schema.ValidationMessage;
  */
 public class DataQualityClassTests extends CommonFixture {
 
-	private File testSubject;
+    private File testSubject;
 
     /**
      * Obtains the test subject from the ISuite context. The suite attribute
      * {@link org.opengis.cite.trainingdmlai10part2.SuiteAttribute#TEST_SUBJECT} should
      * evaluate to a DOM Document node.
-     * 
-     * @param testContext
-     *            The test (group) context.
+     *
+     * @param testContext The test (group) context.
      */
     @BeforeClass
     public void obtainTestSubject(ITestContext testContext) {
-
-        Object obj = testContext.getSuite().getAttribute(
-        		SuiteAttribute.TEST_SUBJECT.getName());
-          
-        this.testSubject = (File) obj;        
-        
+        Object obj = testContext.getSuite().getAttribute(SuiteAttribute.TEST_SUBJECT.getName());
+        this.testSubject = (File) obj;
     }
 
     /**
@@ -60,90 +55,62 @@ public class DataQualityClassTests extends CommonFixture {
      * testing.
      *
      * @param testSubject A Document node representing the test subject or
-     * metadata about it.
+     *                    metadata about it.
      */
     public void setTestSubject(File testSubject) {
         this.testSubject = testSubject;
-    }	
-	
+    }
+
     /**
      * Checks the behavior of the trim function.
      */
     @Test(description = "Implements AI_DataQuality")
     public void validateByDataQualitySchema() {
-    
-    	
-    	if(!testSubject.isFile()) {
-    		Assert.assertTrue(testSubject.isFile(),"No file selected. ");
-    	}
-    	
-    	BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
-	      String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/dataQuality.json";
-	  	
-	        boolean valid = false;
-	        StringBuffer sb = new StringBuffer();
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
-	        InputStream inputStream = tester.getClass()
-	                .getResourceAsStream(schemaToApply);
-		
-	        try {
-		      JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
-		          JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
+        BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+        String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/dataQuality.json";
 
-		          schema.initializeValidators(); 
-		          
-		          JsonNode node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
-		        
-		        String arrayToFetch = "quality";
+        boolean valid = false;
+        StringBuffer sb = new StringBuffer();
 
-		        
+        InputStream inputStream = tester.getClass().getResourceAsStream(schemaToApply);
 
-		        
-			
-					if(node.has(arrayToFetch))
-					{
-	
-			
-						
-						for(int indexToFetch=0; indexToFetch < node.get(arrayToFetch).size(); indexToFetch++) {
-							
-					
-	
-							if(node.get(arrayToFetch).get(indexToFetch).getClass().toString().endsWith("com.fasterxml.jackson.databind.node.ObjectNode"))
-							{
-		
-						
-									
-									Set<ValidationMessage> errors = schema.validate(node.get(arrayToFetch).get(indexToFetch));
-									Iterator it = errors.iterator();
-									while(it.hasNext())
-									{
-										sb.append("Item "+indexToFetch+" has error "+it.next()+".\n");
-						
-									}
-								
-								
-								
-							}
-							else {
-								sb.append("Item in array not an JSON Object. ");
-							}
-					   }
-	
-					}
-					else {
-						sb.append("There was no '"+arrayToFetch+"' array found in the file. ");
-					}
-		        
-				
-			    
-			
-		} catch (Exception e) {
-			sb.append(e.getMessage());
-		}
+        try {
+            // Get Json Node from schema file(FileInputStream)
+            JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
+            // Get Json Schema from JsonNode
+            JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
+            schema.initializeValidators();
+            // Get Json Node from test subject file(FileInputStream)
+            JsonNode node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
+            String arrayToFetch = "quality";
 
-	        Assert.assertTrue(sb.toString().length()==0,sb.toString());
-	      
+            if (node.has(arrayToFetch)) {
+                for (int indexToFetch = 0; indexToFetch < node.get(arrayToFetch).size(); indexToFetch++) {
+                    if (node.get(arrayToFetch).get(indexToFetch).getClass().toString().endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+                        Set<ValidationMessage> errors = schema.validate(node.get(arrayToFetch).get(indexToFetch));
+                        Iterator it = errors.iterator();
+                        while (it.hasNext()) {
+                            sb.append("Item " + indexToFetch + " has error " + it.next() + ".\n");
+                        }
+                    } else {
+                        sb.append("Item in array not an JSON Object. ");
+                    }
+                }
+
+            } else {
+                sb.append("There was no '" + arrayToFetch + "' array found in the file. ");
+            }
+
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+        }
+
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
+
     }
 
 }
