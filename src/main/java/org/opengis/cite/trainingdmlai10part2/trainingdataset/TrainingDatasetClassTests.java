@@ -1,49 +1,24 @@
 package org.opengis.cite.trainingdmlai10part2.trainingdataset;
 
-import java.io.IOException;
-import java.net.URL;
-import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.ValidationMessage;
 import org.opengis.cite.trainingdmlai10part2.BaseJsonSchemaValidatorTest;
 import org.opengis.cite.trainingdmlai10part2.CommonFixture;
-import org.opengis.cite.trainingdmlai10part2.ErrorMessage;
-import org.opengis.cite.trainingdmlai10part2.ErrorMessageKeys;
 import org.opengis.cite.trainingdmlai10part2.SuiteAttribute;
-import org.opengis.cite.validation.RelaxNGValidator;
-import org.opengis.cite.validation.ValidationErrorHandler;
-import org.testng.Assert;
-import org.testng.ITestContext;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.Set;
-
-import org.opengis.cite.validation.RelaxNGValidator;
-import org.opengis.cite.validation.ValidationErrorHandler;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.SpecVersion;
-import com.networknt.schema.SpecVersionDetector;
-import com.networknt.schema.ValidationMessage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Includes various tests of capability 1.
@@ -62,8 +37,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     @BeforeClass
     public void obtainTestSubject(ITestContext testContext) {
 
-        Object obj = testContext.getSuite().getAttribute(
-                SuiteAttribute.TEST_SUBJECT.getName());
+        Object obj = testContext.getSuite().getAttribute(SuiteAttribute.TEST_SUBJECT.getName());
 
         this.testSubject = (File) obj;
     }
@@ -103,9 +77,59 @@ public class TrainingDatasetClassTests extends CommonFixture {
      * Checks the behavior of the trim function.
      */
     @Test(description = "Implements Abstract Test 2 (/conf/base/jsonbasetype/datetime)")
-    public void validateDateTimeValues() {
-        throw new SkipException("Not implemented yet.");
+    public void validateDateTimeValues() throws Exception {
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+        String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ci_date.json";
+        boolean valid = false;
+        StringBuffer sb = new StringBuffer();
+
+        InputStream inputStream = tester.getClass().getResourceAsStream(schemaToApply);
+
+        try {
+            JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
+            JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
+
+            schema.initializeValidators();
+
+            JsonNode node = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(new FileInputStream(testSubject)));
+
+            String[] arrayToFetch = {"createdTime", "updatedTime"};
+//            createdTime DateTime [0..1]
+//            updatedTime DateTime [0..1]
+
+            List<JsonNode> nodes = new ArrayList<JsonNode>();
+
+            for (String array : arrayToFetch) {
+                if (node.has(array)) {
+                    nodes.add(node.get(array));
+                }
+            }
+
+            for (JsonNode targetNode : nodes) {
+                if (targetNode.size() > 1) Assert.fail(String.format("Node %s has more than one item.", targetNode));
+
+                for (int i = 0; i < targetNode.size(); i++) {
+                    JsonNode currentNode = targetNode.get(i);
+                    String nodeClass = currentNode.getClass().toString();
+                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+                        Set<ValidationMessage> errors = schema.validate(currentNode);
+                        Iterator it = errors.iterator();
+                        while (it.hasNext()) {
+                            sb.append("Item " + i + " has error " + it.next() + ".\n");
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
