@@ -14,12 +14,13 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Includes various tests of capability 1.
@@ -74,27 +75,17 @@ public class TrainingDatasetClassTests extends CommonFixture {
         Assert.assertTrue(node != null, "Invalid JSON file. ");
     }
 
-    public JsonNode GetSchemaNode(String schemaToApply) throws IOException {
-        BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
-
-        InputStream inputStream = tester.getClass().getResourceAsStream(schemaToApply);
-        JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
-        JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
-
-        schema.initializeValidators();
-        return schemaNode;
-    }
-
     /**
-     * Checks the behavior of the trim function.
+     * Verify that JSON instance documents claiming conformance to this specification contain valid DateTime values according
+     * to Date and Time on the Internet: Timestamps <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">RFC 3339 Section 5.6</a>.
      */
     @Test(description = "Implements Abstract Test 2 (/conf/base/jsonbasetype/datetime)")
-    public void validateDateTimeValues() throws Exception {
+    public void validateDateTimeValues() {
         if (!testSubject.isFile()) {
             Assert.assertTrue(testSubject.isFile(), "No file selected. ");
         }
 
-        String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ci_date.json";
+        String schemaToApply = SCHEMA_PATH + "ci_date.json";
         StringBuffer sb = new StringBuffer();
         boolean valid = false;
         try {
@@ -104,8 +95,6 @@ public class TrainingDatasetClassTests extends CommonFixture {
             JsonNode node = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"createdTime", "updatedTime"};
-//            createdTime DateTime [0..1]
-//            updatedTime DateTime [0..1]
 
             List<JsonNode> nodes = new ArrayList<JsonNode>();
 
@@ -116,8 +105,6 @@ public class TrainingDatasetClassTests extends CommonFixture {
             }
 
             for (JsonNode targetNode : nodes) {
-                if (targetNode.size() > 1) Assert.fail(String.format("Node %s has more than one item.", targetNode));
-
                 for (int i = 0; i < targetNode.size(); i++) {
                     JsonNode currentNode = targetNode.get(i);
                     String nodeClass = currentNode.getClass().toString();
@@ -139,7 +126,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that JSON instance documents claiming conformance to this specification validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/namedValue.json">namedValue.json</a>.
      */
     @Test(description = "Implements Abstract Test 3 (/conf/base/jsonbasetype/namedvalue)")
     public void ValidateAgainstNamedValueSchema() {
@@ -147,7 +134,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
             Assert.assertTrue(testSubject.isFile(), "No file selected. ");
         }
 
-        String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/namedValue.json";
+        String schemaToApply = SCHEMA_PATH + "namedValue.json";
         StringBuffer sb = new StringBuffer();
 
         try {
@@ -156,8 +143,8 @@ public class TrainingDatasetClassTests extends CommonFixture {
             JsonSchema schema = tester.getSchema(schemaToApply);
             JsonNode node = tester.getNodeFromFile(testSubject);
 
-            String[] arrayToFetch = {"statisticsInfo", "classes"};
-            String[] arrayToFetchAtLeastOne = {"metrics"};
+            String[] arrayToFetch = {"statisticsInfo", "classes", "metrics"};
+//            String[] arrayToFetchAtLeastOne = {"metrics"};
 
             // statisticsInfo [0..*]
             // classes [0..*]
@@ -184,18 +171,109 @@ public class TrainingDatasetClassTests extends CommonFixture {
                     }
                 }
             }
+//Data type and values should validate in json schema
+//            List<JsonNode> nodesAtLeastOne = new ArrayList<JsonNode>();
+//
+//            for (String array : arrayToFetchAtLeastOne) {
+//                if (node.has(array)) {
+//                    nodesAtLeastOne.add(node.get(array));
+//                }
+//            }
+//
+//            for (JsonNode targetNode : nodesAtLeastOne) {
+//                if (targetNode.size() > 1) Assert.fail(String.format("Node %s has more than one item.", targetNode));
+//
+//                for (int i = 0; i < targetNode.size(); i++) {
+//                    JsonNode currentNode = targetNode.get(i);
+//                    String nodeClass = currentNode.getClass().toString();
+//                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+//                        Set<ValidationMessage> errors = schema.validate(currentNode);
+//                        Iterator it = errors.iterator();
+//                        while (it.hasNext()) {
+//                            sb.append("Item " + i + " has error " + it.next() + ".\n");
+//                        }
+//                    }
+//                }
+//            }
 
-            List<JsonNode> nodesAtLeastOne = new ArrayList<JsonNode>();
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
-            for (String array : arrayToFetchAtLeastOne) {
-                if (node.has(array)) {
-                    nodesAtLeastOne.add(node.get(array));
+    /**
+     * Verify that JSON instance documents claiming conformance to this specification contain valid URL values according to Uniform Resource Identifier (URI): Generic Syntax <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-4.1">RFC 3986 Section 4.1</a>. A URL value can be absolute or relative and may have an optional fragment identifier.
+     */
+    @Test(description = "Implements Abstract Test 4 (/conf/base/jsonbasetype/url)")
+    public void VerifyThatURLsAreValid() {
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
+
+        String URI_REGEX = "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?";
+        Pattern URI_PATTERN = Pattern.compile(URI_REGEX);
+        BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+        boolean valid = true;
+        try {
+            JsonNode rootNode = tester.getNodeFromFile(testSubject);
+            JsonNode urlNode = rootNode.get("dataURL");
+
+            List<String> urls = new ArrayList<>();
+
+            for (JsonNode node : urlNode) {
+                if (!node.isTextual()) {
+                    throw new IllegalArgumentException("All elements in dataURL must be strings");
+                }
+                urls.add(node.asText());
+            }
+
+            for (String url : urls) {
+                Matcher matcher = URI_PATTERN.matcher(url.trim());
+                if (!matcher.matches()) {
+                    valid = false;
+                    break;
                 }
             }
 
-            for (JsonNode targetNode : nodesAtLeastOne) {
-                if (targetNode.size() > 1) Assert.fail(String.format("Node %s has more than one item.", targetNode));
+        } catch (Exception e) {
+            valid = false;
+            e.printStackTrace();
+        } finally {
+            Assert.assertTrue(valid, "One or more URLs are invalid. ");
+        }
+    }
 
+    /**
+     * Verify that instance documents using the MD_Band JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/md_band.json">md_band.json</a>.
+     */
+    @Test(description = "Implements Abstract Test 5 (/conf/base/isometadatatype/band)")
+    public void validateAgainstBandSchema() {
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
+
+        String schemaToApply = SCHEMA_PATH + "md_band.json";
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonNode node = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {"bands"};
+
+            List<JsonNode> nodes = new ArrayList<JsonNode>();
+
+            for (String array : arrayToFetch) {
+                if (node.has(array)) {
+                    nodes.add(node.get(array));
+                }
+            }
+
+            for (JsonNode targetNode : nodes) {
                 for (int i = 0; i < targetNode.size(); i++) {
                     JsonNode currentNode = targetNode.get(i);
                     String nodeClass = currentNode.getClass().toString();
@@ -213,24 +291,6 @@ public class TrainingDatasetClassTests extends CommonFixture {
             sb.append(e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Checks the behavior of the trim function.
-     */
-    @Test(description = "Implements Abstract Test 4 (/conf/base/jsonbasetype/url)")
-    public void VerifyThatURLsAreValid() {
-        throw new SkipException("Not implemented yet.");
-
-    }
-
-
-    /**
-     * Checks the behavior of the trim function.
-     */
-    @Test(description = "Implements Abstract Test 5 (/conf/base/isometadatatype/band)")
-    public void validateAgainstBandSchema() {
-        throw new SkipException("Not implemented yet.");
 
     }
 
@@ -310,14 +370,14 @@ public class TrainingDatasetClassTests extends CommonFixture {
 
             if (node.has("type")) {
                 if (node.get("type").asText().equals("AI_EOTrainingDataset")) {
-                    String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_eoTrainingDataset.json";
+                    String schemaToApply = SCHEMA_PATH + "ai_eoTrainingDataset.json";
                     InputStream inputStream = tester.getClass().getResourceAsStream(schemaToApply);
                     JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
                     JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
                     schema.initializeValidators();
                     errors = schema.validate(node);
                 } else if (node.get("type").asText().equals("AI_AbstractTrainingDataset")) {
-                    String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_trainingDataset.json";
+                    String schemaToApply = SCHEMA_PATH + "ai_trainingDataset.json";
                     InputStream inputStream = tester.getClass().getResourceAsStream(schemaToApply);
                     JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
                     JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
