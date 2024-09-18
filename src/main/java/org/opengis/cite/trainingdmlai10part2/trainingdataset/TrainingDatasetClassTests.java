@@ -295,7 +295,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the EX_Extent JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ex_extent.json">ex_extent.json</a>.
      */
     @Test(description = "Implements Abstract Test 6 (/conf/base/isometadatatype/extent)")
     public void ValidateAgainstExtentSchema() {
@@ -304,7 +304,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the CI_Citation JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ci_citation.json">ci_citation.json</a>.
      */
     @Test(description = "Implements Abstract Test 7 (/conf/base/isometadatatype/citation)")
     public void ValidateAgainstCitationSchema() {
@@ -313,7 +313,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the MD_Scope JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/md_scope.json">md_scope.json</a>.
      */
     @Test(description = "Implements Abstract Test 8 (/conf/base/isometadatatype/scope)")
     public void ValidateAgainstScopeSchema() {
@@ -322,7 +322,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the QualityElement JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/qualityElement.json">qualityElement.json</a>.
      */
     @Test(description = "Implements Abstract Test 9 (/conf/base/isoqualitytype/element)")
     public void ValidateAgainstElementQualitySchema() {
@@ -331,7 +331,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the Feature JSON objects validate against the JSON schema specified in <a href="https://geojson.org/schema/Feature.json">Feature.json</a>.
      */
     @Test(description = "Implements Abstract Test 10 (/conf/base/geospatialtype/feature)")
     public void validateAgainstFeatureSchema() {
@@ -340,7 +340,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the AI_MetricsInLiterature JSON objects listed in Table 3 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_metricsInLiterature.json">ai_metricsInLiterature.json</a>.
      */
     @Test(description = "Implements Abstract Test 12 (/conf/aitrainingdataset/metricsinliterature)")
     public void validateAgainstMetricsInLiteratureSchema() {
@@ -350,7 +350,9 @@ public class TrainingDatasetClassTests extends CommonFixture {
 
 
     /**
-     * Checks the behavior of the trim function.
+     * Abstract Test 11: Verify that instance documents using the AI_TrainingDataset JSON objects listed in Table 2 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_trainingDataset.json">ai_trainingDataset.json</a>.
+     * <br/><br/>
+     * Abstract Test 13: Verify that instance documents using the AI_EOTrainingDataset JSON objects listed in Table 2 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_eoTrainingDataset.json">ai_eoTrainingDataset.json</a>.
      */
     @Test(description = "Implements Abstract Test 11 (/conf/aitrainingdataset/trainingdataset) and Abstract Test 13 (/conf/aitrainingdataset/eotrainingdataset)", priority = -1)
     public void validateByTrainingDatasetSchema() {
