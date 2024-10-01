@@ -6,6 +6,7 @@ import com.networknt.schema.ValidationMessage;
 import org.opengis.cite.trainingdmlai10part2.BaseJsonSchemaValidatorTest;
 import org.opengis.cite.trainingdmlai10part2.CommonFixture;
 import org.opengis.cite.trainingdmlai10part2.SuiteAttribute;
+import org.opengis.cite.trainingdmlai10part2.util.JsonUtils;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.SkipException;
@@ -92,17 +93,10 @@ public class TrainingDatasetClassTests extends CommonFixture {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
             JsonSchema schema = tester.getSchema(schemaToApply);
-            JsonNode node = tester.getNodeFromFile(testSubject);
+            JsonNode rootNode = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"createdTime", "updatedTime"};
-
-            List<JsonNode> nodes = new ArrayList<JsonNode>();
-
-            for (String array : arrayToFetch) {
-                if (node.has(array)) {
-                    nodes.add(node.get(array));
-                }
-            }
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(rootNode, arrayToFetch);
 
             for (JsonNode targetNode : nodes) {
                 for (int i = 0; i < targetNode.size(); i++) {
@@ -141,23 +135,11 @@ public class TrainingDatasetClassTests extends CommonFixture {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
             JsonSchema schema = tester.getSchema(schemaToApply);
-            JsonNode node = tester.getNodeFromFile(testSubject);
+            JsonNode rootNode = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"statisticsInfo", "classes", "metrics"};
-//            String[] arrayToFetchAtLeastOne = {"metrics"};
 
-            // statisticsInfo [0..*]
-            // classes [0..*]
-            // metrics [1..*]
-
-            List<JsonNode> nodes = new ArrayList<JsonNode>();
-
-            for (String array : arrayToFetch) {
-                if (node.has(array)) {
-                    nodes.add(node.get(array));
-                }
-            }
-
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(rootNode, arrayToFetch);
             for (JsonNode targetNode : nodes) {
                 for (int i = 0; i < targetNode.size(); i++) {
                     JsonNode currentNode = targetNode.get(i);
@@ -171,31 +153,6 @@ public class TrainingDatasetClassTests extends CommonFixture {
                     }
                 }
             }
-//Data type and values should validate in json schema
-//            List<JsonNode> nodesAtLeastOne = new ArrayList<JsonNode>();
-//
-//            for (String array : arrayToFetchAtLeastOne) {
-//                if (node.has(array)) {
-//                    nodesAtLeastOne.add(node.get(array));
-//                }
-//            }
-//
-//            for (JsonNode targetNode : nodesAtLeastOne) {
-//                if (targetNode.size() > 1) Assert.fail(String.format("Node %s has more than one item.", targetNode));
-//
-//                for (int i = 0; i < targetNode.size(); i++) {
-//                    JsonNode currentNode = targetNode.get(i);
-//                    String nodeClass = currentNode.getClass().toString();
-//                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
-//                        Set<ValidationMessage> errors = schema.validate(currentNode);
-//                        Iterator it = errors.iterator();
-//                        while (it.hasNext()) {
-//                            sb.append("Item " + i + " has error " + it.next() + ".\n");
-//                        }
-//                    }
-//                }
-//            }
-
         } catch (Exception e) {
             sb.append(e.getMessage());
             e.printStackTrace();
@@ -215,25 +172,30 @@ public class TrainingDatasetClassTests extends CommonFixture {
         Pattern URI_PATTERN = Pattern.compile(URI_REGEX);
         BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
+        List<String> invalidUrls = new ArrayList<>();
+
         boolean valid = true;
         try {
             JsonNode rootNode = tester.getNodeFromFile(testSubject);
-            JsonNode urlNode = rootNode.get("dataURL");
+
+            String[] arrayToFetch = {"dataURL", "imageURL"};
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(rootNode, arrayToFetch);
 
             List<String> urls = new ArrayList<>();
-
-            for (JsonNode node : urlNode) {
-                if (!node.isTextual()) {
-                    throw new IllegalArgumentException("All elements in dataURL must be strings");
+            for (JsonNode currentNode : nodes) {
+                for (JsonNode node : currentNode) {
+                    if (!node.isTextual()) {
+                        throw new IllegalArgumentException("All elements in dataURL/imageURL must be strings");
+                    }
+                    urls.add(node.asText());
                 }
-                urls.add(node.asText());
             }
 
             for (String url : urls) {
                 Matcher matcher = URI_PATTERN.matcher(url.trim());
                 if (!matcher.matches()) {
                     valid = false;
-                    break;
+                    invalidUrls.add(url);
                 }
             }
 
@@ -241,7 +203,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
             valid = false;
             e.printStackTrace();
         } finally {
-            Assert.assertTrue(valid, "One or more URLs are invalid. ");
+            Assert.assertTrue(valid, "One or more URLs are invalid. " + String.join(", ", invalidUrls));
         }
     }
 
@@ -261,17 +223,11 @@ public class TrainingDatasetClassTests extends CommonFixture {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
             JsonSchema schema = tester.getSchema(schemaToApply);
-            JsonNode node = tester.getNodeFromFile(testSubject);
+            JsonNode rootNode = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"bands"};
 
-            List<JsonNode> nodes = new ArrayList<JsonNode>();
-
-            for (String array : arrayToFetch) {
-                if (node.has(array)) {
-                    nodes.add(node.get(array));
-                }
-            }
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(rootNode, arrayToFetch);
 
             for (JsonNode targetNode : nodes) {
                 for (int i = 0; i < targetNode.size(); i++) {
@@ -291,7 +247,6 @@ public class TrainingDatasetClassTests extends CommonFixture {
             sb.append(e.getMessage());
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -299,8 +254,40 @@ public class TrainingDatasetClassTests extends CommonFixture {
      */
     @Test(description = "Implements Abstract Test 6 (/conf/base/isometadatatype/extent)")
     public void ValidateAgainstExtentSchema() {
-        throw new SkipException("Not implemented yet.");
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        String schemaToApply = SCHEMA_PATH + "ex_extend.json";
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonNode node = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {"extent"};
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(node, arrayToFetch);
+
+            for (JsonNode targetNode : nodes) {
+                for (int i = 0; i < targetNode.size(); i++) {
+                    JsonNode currentNode = targetNode.get(i);
+                    String nodeClass = currentNode.getClass().toString();
+                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+                        Set<ValidationMessage> errors = schema.validate(currentNode);
+                        Iterator it = errors.iterator();
+                        while (it.hasNext()) {
+                            sb.append("Item " + i + " has error " + it.next() + ".\n");
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
