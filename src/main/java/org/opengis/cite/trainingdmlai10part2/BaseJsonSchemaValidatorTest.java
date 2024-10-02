@@ -87,6 +87,9 @@ public class BaseJsonSchemaValidatorTest {
 
     public JsonSchema getSchema(String schemaName) throws IOException {
         InputStream inputStream = getClass().getResourceAsStream(schemaName);
+        if (inputStream == null) {
+            throw new IOException("Resource not found: " + schemaName + ".");
+        }
         JsonNode schemaNode = getJsonNodeFromStringContent(otherConvertInputStreamToString(inputStream));
         JsonSchema schema = getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
 

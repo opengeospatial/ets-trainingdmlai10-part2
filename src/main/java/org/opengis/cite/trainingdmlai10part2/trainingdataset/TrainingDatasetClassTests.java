@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -88,7 +89,6 @@ public class TrainingDatasetClassTests extends CommonFixture {
 
         String schemaToApply = SCHEMA_PATH + "ci_date.json";
         StringBuffer sb = new StringBuffer();
-        boolean valid = false;
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
@@ -157,6 +157,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
             sb.append(e.getMessage());
             e.printStackTrace();
         }
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
@@ -172,7 +173,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
         Pattern URI_PATTERN = Pattern.compile(URI_REGEX);
         BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-        List<String> invalidUrls = new ArrayList<>();
+        StringBuffer sb = new StringBuffer();
 
         boolean valid = true;
         try {
@@ -194,24 +195,23 @@ public class TrainingDatasetClassTests extends CommonFixture {
             for (String url : urls) {
                 Matcher matcher = URI_PATTERN.matcher(url.trim());
                 if (!matcher.matches()) {
-                    valid = false;
-                    invalidUrls.add(url);
+                    sb.append("Invalid URL: " + url + ".\n");
                 }
             }
 
         } catch (Exception e) {
-            valid = false;
+            sb.append(e.getMessage());
             e.printStackTrace();
-        } finally {
-            Assert.assertTrue(valid, "One or more URLs are invalid. " + String.join(", ", invalidUrls));
         }
+
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
      * Verify that instance documents using the MD_Band JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/md_band.json">md_band.json</a>.
      */
     @Test(description = "Implements Abstract Test 5 (/conf/base/isometadatatype/band)")
-    public void validateAgainstBandSchema() {
+    public void validateAgainstBandSchema() throws IOException {
         if (!testSubject.isFile()) {
             Assert.assertTrue(testSubject.isFile(), "No file selected. ");
         }
@@ -247,18 +247,19 @@ public class TrainingDatasetClassTests extends CommonFixture {
             sb.append(e.getMessage());
             e.printStackTrace();
         }
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
      * Verify that instance documents using the EX_Extent JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ex_extent.json">ex_extent.json</a>.
      */
     @Test(description = "Implements Abstract Test 6 (/conf/base/isometadatatype/extent)")
-    public void ValidateAgainstExtentSchema() {
+    public void ValidateAgainstExtentSchema() throws IOException {
         if (!testSubject.isFile()) {
             Assert.assertTrue(testSubject.isFile(), "No file selected. ");
         }
 
-        String schemaToApply = SCHEMA_PATH + "ex_extend.json";
+        String schemaToApply = SCHEMA_PATH + "ex_extent.json";
         StringBuffer sb = new StringBuffer();
 
         try {
@@ -288,6 +289,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
             sb.append(e.getMessage());
             e.printStackTrace();
         }
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
