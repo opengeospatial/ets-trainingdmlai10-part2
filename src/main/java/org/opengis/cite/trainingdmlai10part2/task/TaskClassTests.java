@@ -53,6 +53,14 @@ public class TaskClassTests extends CommonFixture {
     }
 
     /**
+     * Verify that instance documents using the AI_Task JSON objects listed in Table 7 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_task.json">ai_task.json</a>.
+     **/
+    @Test(description = "Implements Abstract Test 17 (/req/aitask/task)")
+    public void validateByTask() {
+        throw new SkipException("Not implemented yet.");
+    }
+
+    /**
      * Sets the test subject. This method is intended to facilitate unit
      * testing.
      *
@@ -64,9 +72,9 @@ public class TaskClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
-     */
-    @Test(description = "Implements AI Task - TBA")
+     * Verify that instance documents using the AI_EOTask JSON objects listed in Table 7 and Table 8 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_eoTask.json">ai_eoTask.json</a>.
+     **/
+    @Test(description = "Implements Abstract Test 18 AI Task - TBA (/req/aitask/eotask)")
     public void validateByTaskSchema() {
         if (!testSubject.isFile()) {
             Assert.assertTrue(testSubject.isFile(), "No file selected. ");

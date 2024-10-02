@@ -1,8 +1,6 @@
 package org.opengis.cite.trainingdmlai10part2;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -85,5 +83,23 @@ public class BaseJsonSchemaValidatorTest {
         }
 
         return result.toString("UTF-8");
+    }
+
+    public JsonSchema getSchema(String schemaName) throws IOException {
+        InputStream inputStream = getClass().getResourceAsStream(schemaName);
+        if (inputStream == null) {
+            throw new IOException("Resource not found: " + schemaName + ".");
+        }
+        JsonNode schemaNode = getJsonNodeFromStringContent(otherConvertInputStreamToString(inputStream));
+        JsonSchema schema = getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
+
+        schema.initializeValidators();
+
+        return schema;
+    }
+
+    public JsonNode getNodeFromFile(java.io.File testSubject) throws IOException {
+        JsonNode node = getJsonNodeFromStringContent(otherConvertInputStreamToString(new FileInputStream(testSubject)));
+        return node;
     }
 }
