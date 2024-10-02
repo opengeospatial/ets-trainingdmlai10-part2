@@ -66,7 +66,7 @@ public class LabelingClassTests extends CommonFixture {
     /**
      * Checks the behavior of the trim function.
      */
-    @Test(description = "Implements AI Labeling - TBA")
+    @Test(description = "Implements Abstract Test 24 AI Labeling - TBA (/req/ailabeling/labeling)")
     public void validateByLabelingSchema() {
         if (!testSubject.isFile()) {
             Assert.assertTrue(testSubject.isFile(), "No file selected. ");
@@ -112,4 +112,29 @@ public class LabelingClassTests extends CommonFixture {
 
         Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
+
+    /**
+     * Verify that instance documents using the AI_Labeler JSON objects listed in Table 14 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_labeler.json">ai_labeler.json</a>.
+     **/
+    @Test(description = "Implements Abstract Test 25 (/req/ailabeling/labeler)")
+    public void validateByLabeler() {
+        throw new SkipException("Not implemented yet.");
+    }
+
+    /**
+     * Verify that instance documents using the AI_LabelingProcedure JSON objects listed in Table 15 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_labelingProcedure.json">ai_labelingProcedure.json</a>.
+     **/
+    @Test(description = "Implements Abstract Test 26 (/req/ailabeling/labelingprocedure)")
+    public void validateByLabelingProcedure() {
+        throw new SkipException("Not implemented yet.");
+    }
+
+    /**
+     * Verify that instance documents using the AI_LabelingMethodCode JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_labelingMethodCode.json">ai_labelingMethodCode.json</a>.
+     **/
+    @Test(description = "Implements Abstract Test 27 (/req/ailabeling/labelingmethodcode)")
+    public void validateByLabelingMethodCode() {
+        throw new SkipException("Not implemented yet.");
+    }
+
 }

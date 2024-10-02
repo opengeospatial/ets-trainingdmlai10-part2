@@ -67,7 +67,7 @@ public class TrainingDataClassTests extends CommonFixture {
     /**
      * Checks the behavior of the trim function.
      */
-    @Test(description = "Implements AI TrainingData - TBA")
+    @Test(description = "Implements Abstract Test 14 AI TrainingData - TBA (/req/aitrainingdata/trainingdata)")
     public void validateByTrainingDataSchema() {
         if (!testSubject.isFile()) {
             Assert.assertTrue(testSubject.isFile(), "No file selected. ");
@@ -112,5 +112,21 @@ public class TrainingDataClassTests extends CommonFixture {
         }
 
         Assert.assertTrue(sb.toString().length() == 0, sb.toString());
+    }
+
+    /**
+     * Verify that instance documents using the AI_TrainingTypeCode JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_trainingTypeCode.json">ai_trainingTypeCode.json</a>.
+     **/
+    @Test(description = "Implements Abstract Test 15 (/conf/aitrainingdata/trainingtypecode)")
+    public void validateByTrainingTypeCode() {
+        throw new SkipException("Not implemented yet.");
+    }
+
+    /**
+     * Verify that instance documents using the AI_EOTrainingData JSON objects listed in Table 5 and Table 6 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_eoTrainingData.json">ai_eoTrainingData.json</a>.
+     **/
+    @Test(description = "Implements Abstract Test 16 (/req/aitrainingdata/eotrainingdata)")
+    public void validateByEoTrainingData() {
+        throw new SkipException("Not implemented yet.");
     }
 }
