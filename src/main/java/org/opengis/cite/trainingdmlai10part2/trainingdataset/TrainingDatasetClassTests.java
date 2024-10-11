@@ -56,8 +56,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     public void setTestSubject(File testSubject) {
         this.testSubject = testSubject;
     }
-
-
+    
     /**
      * Checks the behavior of the trim function.
      */
@@ -87,7 +86,11 @@ public class TrainingDatasetClassTests extends CommonFixture {
             Assert.assertTrue(testSubject.isFile(), "No file selected. ");
         }
 
-        String schemaToApply = SCHEMA_PATH + "ci_date.json";
+        // TODO: should follow RFC 3339 Section 5.6 but not schema (https://datatracker.ietf.org/doc/html/rfc3339#section-5.6)
+        // https://github.com/ethlo/itu?tab=readme-ov-file#parserfc3339
+        // https://central.sonatype.com/artifact/com.ethlo.time/itu
+
+        String schemaToApply = SCHEMA_PATH + "dateTime.json";
         StringBuffer sb = new StringBuffer();
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
@@ -99,15 +102,11 @@ public class TrainingDatasetClassTests extends CommonFixture {
             List<JsonNode> nodes = JsonUtils.findNodesByNames(rootNode, arrayToFetch);
 
             for (JsonNode targetNode : nodes) {
-                for (int i = 0; i < targetNode.size(); i++) {
-                    JsonNode currentNode = targetNode.get(i);
-                    String nodeClass = currentNode.getClass().toString();
-                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
-                        Set<ValidationMessage> errors = schema.validate(currentNode);
-                        Iterator it = errors.iterator();
-                        while (it.hasNext()) {
-                            sb.append("Item " + i + " has error " + it.next() + ".\n");
-                        }
+                if (targetNode.isTextual()) {
+                    Set<ValidationMessage> errors = schema.validate(targetNode);
+                    Iterator it = errors.iterator();
+                    while (it.hasNext()) {
+                        sb.append("Item has error " + it.next() + ".\n");
                     }
                 }
             }
@@ -272,16 +271,10 @@ public class TrainingDatasetClassTests extends CommonFixture {
             List<JsonNode> nodes = JsonUtils.findNodesByNames(node, arrayToFetch);
 
             for (JsonNode targetNode : nodes) {
-                for (int i = 0; i < targetNode.size(); i++) {
-                    JsonNode currentNode = targetNode.get(i);
-                    String nodeClass = currentNode.getClass().toString();
-                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
-                        Set<ValidationMessage> errors = schema.validate(currentNode);
-                        Iterator it = errors.iterator();
-                        while (it.hasNext()) {
-                            sb.append("Item " + i + " has error " + it.next() + ".\n");
-                        }
-                    }
+                Set<ValidationMessage> errors = schema.validate(targetNode);
+                Iterator it = errors.iterator();
+                while (it.hasNext()) {
+                    sb.append("Item " + targetNode.asText() + " has error " + it.next() + ".\n");
                 }
             }
 
