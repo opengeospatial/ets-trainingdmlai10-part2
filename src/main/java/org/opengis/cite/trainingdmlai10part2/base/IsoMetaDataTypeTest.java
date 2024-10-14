@@ -131,8 +131,41 @@ public class IsoMetaDataTypeTest extends CommonFixture {
      */
     @Test(description = "Implements Abstract Test 7 (/conf/base/isometadatatype/citation)")
     public void verifyCitation() {
-        throw new SkipException("Not implemented yet.");
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        String schemaToApply = SCHEMA_PATH + "ci_citation.json";
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonNode node = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {"dataSources"};
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(node, arrayToFetch);
+
+            for (JsonNode targetNode : nodes) {
+                for (int i = 0; i < targetNode.size(); i++) {
+                    JsonNode currentNode = targetNode.get(i);
+                    String nodeClass = currentNode.getClass().toString();
+                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+                        Set<ValidationMessage> errors = schema.validate(currentNode);
+                        Iterator it = errors.iterator();
+                        while (it.hasNext()) {
+                            sb.append("Item " + i + " has error " + it.next() + ".\n");
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
@@ -140,7 +173,40 @@ public class IsoMetaDataTypeTest extends CommonFixture {
      */
     @Test(description = "Implements Abstract Test 8 (/conf/base/isometadatatype/scope)")
     public void verifyScope() {
-        throw new SkipException("Not implemented yet.");
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        String schemaToApply = SCHEMA_PATH + "md_scope.json";
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonNode node = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {"scope"};
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(node, arrayToFetch);
+
+            for (JsonNode targetNode : nodes) {
+                for (int i = 0; i < targetNode.size(); i++) {
+                    JsonNode currentNode = targetNode.get(i);
+                    String nodeClass = currentNode.getClass().toString();
+                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+                        Set<ValidationMessage> errors = schema.validate(currentNode);
+                        Iterator it = errors.iterator();
+                        while (it.hasNext()) {
+                            sb.append("Item " + i + " has error " + it.next() + ".\n");
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 }
