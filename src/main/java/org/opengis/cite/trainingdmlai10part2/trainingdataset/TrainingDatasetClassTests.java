@@ -1,49 +1,28 @@
 package org.opengis.cite.trainingdmlai10part2.trainingdataset;
 
-import java.io.IOException;
-import java.net.URL;
-import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.ValidationMessage;
 import org.opengis.cite.trainingdmlai10part2.BaseJsonSchemaValidatorTest;
 import org.opengis.cite.trainingdmlai10part2.CommonFixture;
-import org.opengis.cite.trainingdmlai10part2.ErrorMessage;
-import org.opengis.cite.trainingdmlai10part2.ErrorMessageKeys;
 import org.opengis.cite.trainingdmlai10part2.SuiteAttribute;
-import org.opengis.cite.validation.RelaxNGValidator;
-import org.opengis.cite.validation.ValidationErrorHandler;
-import org.testng.Assert;
-import org.testng.ITestContext;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.Set;
-
-import org.opengis.cite.validation.RelaxNGValidator;
-import org.opengis.cite.validation.ValidationErrorHandler;
+import org.opengis.cite.trainingdmlai10part2.util.JsonUtils;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.SpecVersion;
-import com.networknt.schema.SpecVersionDetector;
-import com.networknt.schema.ValidationMessage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Includes various tests of capability 1.
@@ -62,8 +41,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     @BeforeClass
     public void obtainTestSubject(ITestContext testContext) {
 
-        Object obj = testContext.getSuite().getAttribute(
-                SuiteAttribute.TEST_SUBJECT.getName());
+        Object obj = testContext.getSuite().getAttribute(SuiteAttribute.TEST_SUBJECT.getName());
 
         this.testSubject = (File) obj;
     }
@@ -78,8 +56,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     public void setTestSubject(File testSubject) {
         this.testSubject = testSubject;
     }
-
-
+    
     /**
      * Checks the behavior of the trim function.
      */
@@ -100,80 +77,341 @@ public class TrainingDatasetClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that JSON instance documents claiming conformance to this specification contain valid DateTime values according
+     * to Date and Time on the Internet: Timestamps <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">RFC 3339 Section 5.6</a>.
      */
     @Test(description = "Implements Abstract Test 2 (/conf/base/jsonbasetype/datetime)")
     public void validateDateTimeValues() {
-        throw new SkipException("Not implemented yet.");
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        // TODO: should follow RFC 3339 Section 5.6 but not schema (https://datatracker.ietf.org/doc/html/rfc3339#section-5.6)
+        // https://github.com/ethlo/itu?tab=readme-ov-file#parserfc3339
+        // https://central.sonatype.com/artifact/com.ethlo.time/itu
+
+        String schemaToApply = SCHEMA_PATH + "dateTime.json";
+        StringBuffer sb = new StringBuffer();
+        try {
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonNode rootNode = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {"createdTime", "updatedTime"};
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(rootNode, arrayToFetch);
+
+            for (JsonNode targetNode : nodes) {
+                if (targetNode.isTextual()) {
+                    Set<ValidationMessage> errors = schema.validate(targetNode);
+                    Iterator it = errors.iterator();
+                    while (it.hasNext()) {
+                        sb.append("Item has error " + it.next() + ".\n");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that JSON instance documents claiming conformance to this specification validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/namedValue.json">namedValue.json</a>.
      */
     @Test(description = "Implements Abstract Test 3 (/conf/base/jsonbasetype/namedvalue)")
     public void ValidateAgainstNamedValueSchema() {
-        throw new SkipException("Not implemented yet.");
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        String schemaToApply = SCHEMA_PATH + "namedValue.json";
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonNode rootNode = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {"statisticsInfo", "classes", "metrics"};
+
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(rootNode, arrayToFetch);
+            for (JsonNode targetNode : nodes) {
+                for (int i = 0; i < targetNode.size(); i++) {
+                    JsonNode currentNode = targetNode.get(i);
+                    String nodeClass = currentNode.getClass().toString();
+                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+                        Set<ValidationMessage> errors = schema.validate(currentNode);
+                        Iterator it = errors.iterator();
+                        while (it.hasNext()) {
+                            sb.append("Item " + i + " has error " + it.next() + ".\n");
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that JSON instance documents claiming conformance to this specification contain valid URL values according to Uniform Resource Identifier (URI): Generic Syntax <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-4.1">RFC 3986 Section 4.1</a>. A URL value can be absolute or relative and may have an optional fragment identifier.
      */
     @Test(description = "Implements Abstract Test 4 (/conf/base/jsonbasetype/url)")
     public void VerifyThatURLsAreValid() {
-        throw new SkipException("Not implemented yet.");
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        String URI_REGEX = "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?";
+        Pattern URI_PATTERN = Pattern.compile(URI_REGEX);
+        BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            JsonNode rootNode = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {"dataURL", "imageURL"};
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(rootNode, arrayToFetch);
+
+            List<String> urls = new ArrayList<>();
+            for (JsonNode currentNode : nodes) {
+                for (JsonNode node : currentNode) {
+                    if (!node.isTextual()) {
+                        throw new IllegalArgumentException("All elements in dataURL/imageURL must be strings");
+                    }
+                    urls.add(node.asText());
+                }
+            }
+
+            for (String url : urls) {
+                Matcher matcher = URI_PATTERN.matcher(url.trim());
+                if (!matcher.matches()) {
+                    sb.append("Invalid URL: " + url + ".\n");
+                }
+            }
+
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
-
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the MD_Band JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/md_band.json">md_band.json</a>.
      */
     @Test(description = "Implements Abstract Test 5 (/conf/base/isometadatatype/band)")
-    public void validateAgainstBandSchema() {
-        throw new SkipException("Not implemented yet.");
+    public void validateAgainstBandSchema() throws IOException {
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        String schemaToApply = SCHEMA_PATH + "md_band.json";
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonNode rootNode = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {"bands"};
+
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(rootNode, arrayToFetch);
+
+            for (JsonNode targetNode : nodes) {
+                for (int i = 0; i < targetNode.size(); i++) {
+                    JsonNode currentNode = targetNode.get(i);
+                    String nodeClass = currentNode.getClass().toString();
+                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+                        Set<ValidationMessage> errors = schema.validate(currentNode);
+                        Iterator it = errors.iterator();
+                        while (it.hasNext()) {
+                            sb.append("Item " + i + " has error " + it.next() + ".\n");
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the EX_Extent JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ex_extent.json">ex_extent.json</a>.
      */
     @Test(description = "Implements Abstract Test 6 (/conf/base/isometadatatype/extent)")
-    public void ValidateAgainstExtentSchema() {
-        throw new SkipException("Not implemented yet.");
+    public void ValidateAgainstExtentSchema() throws IOException {
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        String schemaToApply = SCHEMA_PATH + "ex_extent.json";
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonNode node = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {"extent"};
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(node, arrayToFetch);
+
+            for (JsonNode targetNode : nodes) {
+                Set<ValidationMessage> errors = schema.validate(targetNode);
+                Iterator it = errors.iterator();
+                while (it.hasNext()) {
+                    sb.append("Item " + targetNode.asText() + " has error " + it.next() + ".\n");
+                }
+            }
+
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the CI_Citation JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ci_citation.json">ci_citation.json</a>.
      */
     @Test(description = "Implements Abstract Test 7 (/conf/base/isometadatatype/citation)")
     public void ValidateAgainstCitationSchema() {
-        throw new SkipException("Not implemented yet.");
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        String schemaToApply = SCHEMA_PATH + "ci_citation.json";
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonNode node = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {"dataSources"};
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(node, arrayToFetch);
+
+            for (JsonNode targetNode : nodes) {
+                for (int i = 0; i < targetNode.size(); i++) {
+                    JsonNode currentNode = targetNode.get(i);
+                    String nodeClass = currentNode.getClass().toString();
+                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+                        Set<ValidationMessage> errors = schema.validate(currentNode);
+                        Iterator it = errors.iterator();
+                        while (it.hasNext()) {
+                            sb.append("Item " + i + " has error " + it.next() + ".\n");
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the MD_Scope JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/md_scope.json">md_scope.json</a>.
      */
     @Test(description = "Implements Abstract Test 8 (/conf/base/isometadatatype/scope)")
     public void ValidateAgainstScopeSchema() {
-        throw new SkipException("Not implemented yet.");
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        String schemaToApply = SCHEMA_PATH + "md_scope.json";
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonNode node = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {"scope"};
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(node, arrayToFetch);
+
+            for (JsonNode targetNode : nodes) {
+                for (int i = 0; i < targetNode.size(); i++) {
+                    JsonNode currentNode = targetNode.get(i);
+                    String nodeClass = currentNode.getClass().toString();
+                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+                        Set<ValidationMessage> errors = schema.validate(currentNode);
+                        Iterator it = errors.iterator();
+                        while (it.hasNext()) {
+                            sb.append("Item " + i + " has error " + it.next() + ".\n");
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the QualityElement JSON objects validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/qualityElement.json">qualityElement.json</a>.
      */
     @Test(description = "Implements Abstract Test 9 (/conf/base/isoqualitytype/element)")
     public void ValidateAgainstElementQualitySchema() {
-        throw new SkipException("Not implemented yet.");
+        if (!testSubject.isFile()) {
+            Assert.assertTrue(testSubject.isFile(), "No file selected. ");
+        }
 
+        String schemaToApply = SCHEMA_PATH + "qualityElement.json";
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
+
+            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonNode node = tester.getNodeFromFile(testSubject);
+
+            String[] arrayToFetch = {""}; // TODO: Find nodes where the type is QualityElement (not found in the document)
+            List<JsonNode> nodes = JsonUtils.findNodesByNames(node, arrayToFetch);
+
+            for (JsonNode targetNode : nodes) {
+                for (int i = 0; i < targetNode.size(); i++) {
+                    JsonNode currentNode = targetNode.get(i);
+                    String nodeClass = currentNode.getClass().toString();
+                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
+                        Set<ValidationMessage> errors = schema.validate(currentNode);
+                        Iterator it = errors.iterator();
+                        while (it.hasNext()) {
+                            sb.append("Item " + i + " has error " + it.next() + ".\n");
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            sb.append(e.getMessage());
+            e.printStackTrace();
+        }
+        Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the Feature JSON objects validate against the JSON schema specified in <a href="https://geojson.org/schema/Feature.json">Feature.json</a>.
      */
     @Test(description = "Implements Abstract Test 10 (/conf/base/geospatialtype/feature)")
     public void validateAgainstFeatureSchema() {
@@ -182,7 +420,7 @@ public class TrainingDatasetClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the AI_MetricsInLiterature JSON objects listed in Table 3 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_metricsInLiterature.json">ai_metricsInLiterature.json</a>.
      */
     @Test(description = "Implements Abstract Test 12 (/conf/aitrainingdataset/metricsinliterature)")
     public void validateAgainstMetricsInLiteratureSchema() {
@@ -192,7 +430,9 @@ public class TrainingDatasetClassTests extends CommonFixture {
 
 
     /**
-     * Checks the behavior of the trim function.
+     * Abstract Test 11: Verify that instance documents using the AI_TrainingDataset JSON objects listed in Table 2 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_trainingDataset.json">ai_trainingDataset.json</a>.
+     * <br/><br/>
+     * Abstract Test 13: Verify that instance documents using the AI_EOTrainingDataset JSON objects listed in Table 2 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_eoTrainingDataset.json">ai_eoTrainingDataset.json</a>.
      */
     @Test(description = "Implements Abstract Test 11 (/conf/aitrainingdataset/trainingdataset) and Abstract Test 13 (/conf/aitrainingdataset/eotrainingdataset)", priority = -1)
     public void validateByTrainingDatasetSchema() {
@@ -212,14 +452,14 @@ public class TrainingDatasetClassTests extends CommonFixture {
 
             if (node.has("type")) {
                 if (node.get("type").asText().equals("AI_EOTrainingDataset")) {
-                    String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_eoTrainingDataset.json";
+                    String schemaToApply = SCHEMA_PATH + "ai_eoTrainingDataset.json";
                     InputStream inputStream = tester.getClass().getResourceAsStream(schemaToApply);
                     JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
                     JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
                     schema.initializeValidators();
                     errors = schema.validate(node);
                 } else if (node.get("type").asText().equals("AI_AbstractTrainingDataset")) {
-                    String schemaToApply = "/org/opengis/cite/trainingdmlai10part2/jsonschema/ai_trainingDataset.json";
+                    String schemaToApply = SCHEMA_PATH + "ai_trainingDataset.json";
                     InputStream inputStream = tester.getClass().getResourceAsStream(schemaToApply);
                     JsonNode schemaNode = tester.getJsonNodeFromStringContent(tester.otherConvertInputStreamToString(inputStream));
                     JsonSchema schema = tester.getJsonSchemaFromJsonNodeAutomaticVersion(schemaNode);
