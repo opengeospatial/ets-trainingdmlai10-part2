@@ -1,9 +1,9 @@
 package org.opengis.cite.trainingdmlai10part2.base;
 
+import com.ethlo.time.ITU;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.ValidationMessage;
-import org.apache.jena.atlas.lib.NotImplemented;
 import org.opengis.cite.trainingdmlai10part2.BaseJsonSchemaValidatorTest;
 import org.opengis.cite.trainingdmlai10part2.CommonFixture;
 import org.opengis.cite.trainingdmlai10part2.SuiteAttribute;
@@ -15,6 +15,8 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -78,16 +80,9 @@ public class JsonBaseTypeTest extends CommonFixture {
             Assert.assertTrue(testSubject.isFile(), "No file selected. ");
         }
 
-        // TODO: should follow RFC 3339 Section 5.6 but not schema (https://datatracker.ietf.org/doc/html/rfc3339#section-5.6)
-        // https://github.com/ethlo/itu?tab=readme-ov-file#parserfc3339
-        // https://central.sonatype.com/artifact/com.ethlo.time/itu
-
-        String schemaToApply = SCHEMA_PATH + "dateTime.json";
         StringBuffer sb = new StringBuffer();
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
-
-            JsonSchema schema = tester.getSchema(schemaToApply);
             JsonNode rootNode = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"createdTime", "updatedTime"};
@@ -95,10 +90,8 @@ public class JsonBaseTypeTest extends CommonFixture {
 
             for (JsonNode targetNode : nodes) {
                 if (targetNode.isTextual()) {
-                    Set<ValidationMessage> errors = schema.validate(targetNode);
-                    Iterator it = errors.iterator();
-                    while (it.hasNext()) {
-                        sb.append("Item has error " + it.next() + ".\n");
+                    if (!isValidRFC3339(targetNode.asText())) {
+                        sb.append("Invalid RFC 3339 date time: " + targetNode.asText() + ".\n");
                     }
                 }
             }
@@ -109,7 +102,19 @@ public class JsonBaseTypeTest extends CommonFixture {
 
         Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
-    
+
+    /**
+     * The following profile of ISO 8601 [ISO8601] dates SHOULD be used in new protocols on the Internet.  This is specified using the syntax description notation defined in [ABNF].
+     */
+    private boolean isValidRFC3339(String input) {
+        try {
+            OffsetDateTime dateTime = ITU.parseDateTime(input);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     /**
      * Verify that JSON instance documents claiming conformance to this specification validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/namedValue.json">namedValue.json</a>.
      */
