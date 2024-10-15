@@ -38,4 +38,26 @@ public class JsonUtils {
 
         return matchingNodes;
     }
+
+    public static List<JsonNode> findNodesByType(JsonNode node, String targetType) {
+        List<JsonNode> result = new ArrayList<>();
+
+        if (node.isObject()) {
+            if (node.has("type") && node.get("type").asText().equals(targetType)) {
+                result.add(node);
+            }
+
+            Iterator<JsonNode> elements = node.elements();
+            while (elements.hasNext()) {
+                JsonNode childNode = elements.next();
+                result.addAll(findNodesByType(childNode, targetType));
+            }
+        } else if (node.isArray()) {
+            for (JsonNode arrayElement : node) {
+                result.addAll(findNodesByType(arrayElement, targetType));
+            }
+        }
+
+        return result;
+    }
 }
