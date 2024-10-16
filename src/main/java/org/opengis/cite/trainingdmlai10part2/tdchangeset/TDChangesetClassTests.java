@@ -65,9 +65,9 @@ public class TDChangesetClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Verify that instance documents using the AI_TDChangeset JSON objects listed in Table 17 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_tdChangeset.json">ai_tdChangeset.json</a>.
      */
-    @Test(description = "Implements AI TDChangesets - TBA")
+    @Test(description = "Implements Abstract Test 29 AI TDChangesets - TBA (/req/aitdchangeset/tdchangeset)")
     public void validateByTrainingDatasetChangesetsSchema() {
         if (!testSubject.isFile()) {
             Assert.assertTrue(testSubject.isFile(), "No file selected. ");
