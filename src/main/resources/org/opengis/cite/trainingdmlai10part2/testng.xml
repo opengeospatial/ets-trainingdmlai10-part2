@@ -1,54 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="trainingdmlai10-part2-${version}" verbose="0" configfailurepolicy="continue">
-  <parameter name="iut"  value=""/>
-  <parameter name="ics"  value=""/>
+  <parameter name="iut" value=""/>
+  <parameter name="ics" value=""/>
 
   <listeners>
-    <listener class-name="org.opengis.cite.trainingdmlai10part2.TestRunListener" />
-    <listener class-name="org.opengis.cite.trainingdmlai10part2.SuiteFixtureListener" />
-    <listener class-name="org.opengis.cite.trainingdmlai10part2.TestFailureListener" />
+    <listener class-name="org.opengis.cite.trainingdmlai10part2.TestRunListener"/>
+    <listener class-name="org.opengis.cite.trainingdmlai10part2.SuiteFixtureListener"/>
+    <listener class-name="org.opengis.cite.trainingdmlai10part2.TestFailureListener"/>
   </listeners>
 
-  <test name="AI TrainingDataset">
-    <packages>
-      <package name="org.opengis.cite.trainingdmlai10part2.trainingdataset" />
-    </packages>
+  <!-- Abstract Test 1,2,3,4 -->
+  <test name="Json Base Type">
     <classes>
-      <class name="org.opengis.cite.trainingdmlai10part2.SuitePreconditions" />
+      <class name="org.opengis.cite.trainingdmlai10part2.base.JsonBaseTypeTest"/>
     </classes>
-  </test>  
-  <test name="AI TrainingData">
-    <packages>
-      <package name="org.opengis.cite.trainingdmlai10part2.trainingdata" />
-    </packages>
-  </test> 
-   <test name="AI Task">
-    <packages>
-      <package name="org.opengis.cite.trainingdmlai10part2.task" />
-    </packages>
-  </test>  
-  <test name="AI Label">
-    <packages>
-      <package name="org.opengis.cite.trainingdmlai10part2.label" />
-    </packages>
-  </test>  
-  <test name="AI Data Quality">
-    <packages>
-      <package name="org.opengis.cite.trainingdmlai10part2.dataquality" />
-    </packages>
-  </test>  
-  <test name="AI Labeling">
-    <packages>
-      <package name="org.opengis.cite.trainingdmlai10part2.labeling" />
-    </packages>
-  </test>  
-
-  <test name="AI TDChangeset">
-    <packages>
-      <package name="org.opengis.cite.trainingdmlai10part2.tdchangeset" />
-    </packages>
   </test>
- 
+
+  <!-- Abstract Test 5,6,7,8 -->
+  <test name="Iso MetaData Type">
+    <classes>
+      <class name="org.opengis.cite.trainingdmlai10part2.base.IsoMetaDataTypeTest"/>
+    </classes>
+  </test>
+
+  <!-- Abstract Test 9 -->
+  <test name="Iso Quality Type">
+    <classes>
+      <class name="org.opengis.cite.trainingdmlai10part2.base.IsoQualityTypeTest"/>
+    </classes>
+  </test>
+
+  <!-- Abstract Test 10 -->
+  <test name="Geospatial Type">
+    <classes>
+      <class name="org.opengis.cite.trainingdmlai10part2.base.GeospatialTypeTest"/>
+    </classes>
+  </test>
+
+  <!-- Abstract Test 11,12,13 -->
+  <test name="AI Training Dataset">
+    <classes>
+      <class name="org.opengis.cite.trainingdmlai10part2.aitrainingdataset.AITrainingDatasetTest"/>
+    </classes>
+  </test>
+
+  <!-- Abstract Test 14,15,16 -->
+  <test name="AI Training Data">
+    <classes>
+      <class name="org.opengis.cite.trainingdmlai10part2.aitrainingdata.AITrainingDataTest"/>
+    </classes>
+  </test>
+
+  <!-- Abstract Test 17,18 -->
+  <test name="AI Task">
+    <classes>
+      <class name="org.opengis.cite.trainingdmlai10part2.aitask.AITaskTest"/>
+    </classes>
+  </test>
+
+  <!-- Abstract Test 19,20,21,22,23 -->
+  <test name="AI Label">
+    <classes>
+      <class name="org.opengis.cite.trainingdmlai10part2.ailabel.AILabelTest"/>
+    </classes>
+  </test>
+
+  <!-- Abstract Test 24,25,26,27 -->
+  <test name="AI Task">
+    <classes>
+      <class name="org.opengis.cite.trainingdmlai10part2.ailabeling.AILabelingTest"/>
+    </classes>
+  </test>
+
+  <!-- Abstract Test 28 -->
+  <test name="AI Data Quality">
+    <classes>
+      <class name="org.opengis.cite.trainingdmlai10part2.aidataquality.AIDataQuality"/>
+    </classes>
+  </test>
+
+  <!-- Abstract Test 29 -->
+  <test name="AI Task">
+    <classes>
+      <class name="org.opengis.cite.trainingdmlai10part2.tdchangeset.TDChangesetClassTests"/>
+    </classes>
+  </test>
+
+  <!--    <test name="AI TrainingDataset">-->
+  <!--      <packages>-->
+  <!--        <package name="org.opengis.cite.trainingdmlai10part2.trainingdataset" />-->
+  <!--      </packages>-->
+  <!--      <classes>-->
+  <!--        <class name="org.opengis.cite.trainingdmlai10part2.SuitePreconditions" />-->
+  <!--      </classes>-->
+  <!--    </test>  -->
+  <!--    <test name="AI TrainingData">-->
+  <!--      <packages>-->
+  <!--        <package name="org.opengis.cite.trainingdmlai10part2.trainingdata" />-->
+  <!--      </packages>-->
+  <!--    </test> -->
+  <!--     <test name="AI Task">-->
+  <!--      <packages>-->
+  <!--        <package name="org.opengis.cite.trainingdmlai10part2.task" />-->
+  <!--      </packages>-->
+  <!--    </test>  -->
+  <!--    <test name="AI Label">-->
+  <!--      <packages>-->
+  <!--        <package name="org.opengis.cite.trainingdmlai10part2.label" />-->
+  <!--      </packages>-->
+  <!--    </test>  -->
+  <!--    <test name="AI Data Quality">-->
+  <!--      <packages>-->
+  <!--        <package name="org.opengis.cite.trainingdmlai10part2.dataquality" />-->
+  <!--      </packages>-->
+  <!--    </test>  -->
+  <!--    <test name="AI Labeling">-->
+  <!--      <packages>-->
+  <!--        <package name="org.opengis.cite.trainingdmlai10part2.labeling" />-->
+  <!--      </packages>-->
+  <!--    </test>  -->
+
+  <!--    <test name="AI TDChangeset">-->
+  <!--      <packages>-->
+  <!--        <package name="org.opengis.cite.trainingdmlai10part2.tdchangeset" />-->
+  <!--      </packages>-->
+  <!--    </test>-->
+
   <!-- Add test sets for other conformance classes/levels -->
 </suite>
