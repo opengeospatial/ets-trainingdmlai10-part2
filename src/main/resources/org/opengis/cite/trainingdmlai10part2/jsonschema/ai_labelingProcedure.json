@@ -1,35 +1,35 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_labelingProcedure.json",
-    "title": "AI_LabelingProcedure",
-    "type": "object",
-    "required": [
-        "type",
-        "id",
-        "methods"
-    ],
-    "properties": {
-        "type": {
-            "type": "string",
-            "enum": [
-                "AI_LabelingProcedure"
-            ]
-        },
-        "id": {
-            "type": "string"
-        },
-        "methods": {
-            "type": "array",
-            "items": {
-                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_labelingMethodCode.json"
-            },
-            "minItems": 1
-        },
-        "tools": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai_labelingProcedure.json",
+  "title": "AI_LabelingProcedure",
+  "type": "object",
+  "required": [
+    "type",
+    "id",
+    "methods"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "AI_LabelingProcedure"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "methods": {
+      "type": "array",
+      "items": {
+        "$ref": "ai_labelingMethodCode.json"
+      },
+      "minItems": 1
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
+  }
 }

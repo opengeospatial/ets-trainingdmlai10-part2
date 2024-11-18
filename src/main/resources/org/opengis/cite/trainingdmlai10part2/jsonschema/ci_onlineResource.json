@@ -1,32 +1,32 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ci_onlineResource.json",
-    "title": "CI_OnlineResource",
-    "type": "object",
-    "required": [
-        "linkage"
-    ],
-    "properties": {
-        "linkage": {
-            "type": "string"
-        },
-        "protocol": {
-            "type": "string"
-        },
-        "applicationProfile": {
-            "type": "string"
-        },
-        "name": {
-            "type": "string"
-        },
-        "description": {
-            "type": "string"
-        },
-        "function": {
-            "type": "string"
-        },
-        "protocolRequest": {
-            "type": "string"
-        }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ci_onlineResource.json",
+  "title": "CI_OnlineResource",
+  "type": "object",
+  "required": [
+    "linkage"
+  ],
+  "properties": {
+    "linkage": {
+      "type": "string"
+    },
+    "protocol": {
+      "type": "string"
+    },
+    "applicationProfile": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "function": {
+      "type": "string"
+    },
+    "protocolRequest": {
+      "type": "string"
     }
+  }
 }
