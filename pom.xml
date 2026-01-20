@@ -46,11 +46,6 @@
     </developer>
   </developers>
 
-  <properties>
-    <ets-code>trainingdmlai10-part2</ets-code>
-    <spec-version>1.0</spec-version>
-    <docker.teamengine.version>5.7</docker.teamengine.version>
-  </properties>
 
   <dependencyManagement>
     <dependencies>
