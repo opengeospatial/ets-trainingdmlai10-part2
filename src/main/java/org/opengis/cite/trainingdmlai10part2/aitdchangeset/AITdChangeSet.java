@@ -60,7 +60,7 @@ public class AITdChangeSet extends CommonFixture {
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonSchema schema = tester.getJsonSchemaFromUrl(schemaToApply);
             JsonNode rootNode = tester.getNodeFromFile(testSubject);
             List<JsonNode> targetNode = JsonUtils.findNodesByType(rootNode, targetType);
 

@@ -50,13 +50,13 @@ public class GeospatialTypeTest extends CommonFixture {
             Assert.assertTrue(testSubject.isFile(), "No file selected. ");
         }
 
-        String schemaToApply = SCHEMA_PATH + "geojson/" + "Feature.json";
+        String schemaToApply = LOCATION_OF_GEOJSON_SCHEMA; 
         StringBuffer sb = new StringBuffer();
 
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonSchema schema = tester.getJsonSchemaFromUrl(schemaToApply);
             JsonNode rootNode = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"object"};

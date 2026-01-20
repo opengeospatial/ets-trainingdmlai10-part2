@@ -62,7 +62,7 @@ public class IsoMetaDataTypeTest extends CommonFixture {
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonSchema schema = tester.getJsonSchemaFromUrl(schemaToApply);
             JsonNode rootNode = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"bands"};
@@ -105,7 +105,7 @@ public class IsoMetaDataTypeTest extends CommonFixture {
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonSchema schema = tester.getJsonSchemaFromUrl(schemaToApply);
             JsonNode node = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"extent"};
@@ -141,7 +141,7 @@ public class IsoMetaDataTypeTest extends CommonFixture {
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonSchema schema = tester.getJsonSchemaFromUrl(schemaToApply);
             JsonNode node = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"dataSources"};
@@ -183,7 +183,7 @@ public class IsoMetaDataTypeTest extends CommonFixture {
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonSchema schema = tester.getJsonSchemaFromUrl(schemaToApply);
             JsonNode node = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"scope"};

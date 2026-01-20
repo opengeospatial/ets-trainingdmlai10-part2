@@ -127,10 +127,10 @@ public class JsonBaseTypeTest extends CommonFixture {
         String schemaToApply = SCHEMA_PATH + "namedValue.json";
         StringBuffer sb = new StringBuffer();
 
-        try {
+        try { 
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonSchema schema = tester.getJsonSchemaFromUrl(schemaToApply);
             JsonNode rootNode = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"statisticsInfo", "classes", "metrics"};

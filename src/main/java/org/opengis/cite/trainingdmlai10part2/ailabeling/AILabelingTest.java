@@ -57,7 +57,7 @@ public class AILabelingTest extends CommonFixture {
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonSchema schema = tester.getJsonSchemaFromUrl(schemaToApply);
             JsonNode rootNode = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"labeling"};
@@ -95,7 +95,7 @@ public class AILabelingTest extends CommonFixture {
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonSchema schema = tester.getJsonSchemaFromUrl(schemaToApply);
             JsonNode rootNode = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"labelers"};
@@ -135,7 +135,7 @@ public class AILabelingTest extends CommonFixture {
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonSchema schema = tester.getJsonSchemaFromUrl(schemaToApply);
             JsonNode rootNode = tester.getNodeFromFile(testSubject);
             List<JsonNode> targetNode = JsonUtils.findNodesByType(rootNode, targetType);
 
@@ -171,7 +171,7 @@ public class AILabelingTest extends CommonFixture {
         try {
             BaseJsonSchemaValidatorTest tester = new BaseJsonSchemaValidatorTest();
 
-            JsonSchema schema = tester.getSchema(schemaToApply);
+            JsonSchema schema = tester.getJsonSchemaFromUrl(schemaToApply);
             JsonNode rootNode = tester.getNodeFromFile(testSubject);
 
             String[] arrayToFetch = {"methods"};
