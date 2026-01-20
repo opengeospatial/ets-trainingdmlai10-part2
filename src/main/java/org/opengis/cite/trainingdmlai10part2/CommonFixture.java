@@ -24,9 +24,13 @@ public class CommonFixture {
     /**
      * Root test suite package (absolute path).
      */
-    public static final String ROOT_PKG_PATH = "/org/opengis/cite/trainingdmlai10part2/";
+    //public static final String ROOT_PKG_PATH = "/org/opengis/cite/trainingdmlai10part2/";
+    //public static final String SCHEMA_PATH = ROOT_PKG_PATH + "jsonschema/";
 
-    public static final String SCHEMA_PATH = ROOT_PKG_PATH + "jsonschema/";
+    public static final String ROOT_PKG_PATH = "http://schemas.opengis.net/trainingdml-ai/part2/1.0/"; 
+    public static final String LOCATION_OF_GEOJSON_SCHEMA = "https://geojson.org/schema/Feature.json";   
+    public static final String SCHEMA_PATH = ROOT_PKG_PATH;
+
     /**
      * HTTP client component (JAX-RS Client API).
      */
