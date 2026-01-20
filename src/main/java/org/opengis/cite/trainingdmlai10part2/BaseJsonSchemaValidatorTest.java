@@ -32,24 +32,24 @@ public class BaseJsonSchemaValidatorTest {
     }
 
     public JsonSchema getJsonSchemaFromClasspath(String name) {
-        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7);
         InputStream is = Thread.currentThread().getContextClassLoader()
                 .getResourceAsStream(name);
         return factory.getSchema(is);
     }
 
     public JsonSchema getJsonSchemaFromStringContent(String schemaContent) {
-        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7);
         return factory.getSchema(schemaContent);
     }
 
     public JsonSchema getJsonSchemaFromUrl(String uri) throws URISyntaxException {
-        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7);
         return factory.getSchema(new URI(uri));
     }
 
     public JsonSchema getJsonSchemaFromJsonNode(JsonNode jsonNode) {
-        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7);
         return factory.getSchema(jsonNode);
     }
 
