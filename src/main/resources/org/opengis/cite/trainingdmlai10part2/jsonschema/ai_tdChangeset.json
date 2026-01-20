@@ -1,73 +1,73 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_tdChangeset.json",
-    "title": "AI_TDChangeset",
-    "type": "object",
-    "required": [
-        "type",
-        "id",
-        "changeCount"
-    ],
-    "properties": {
-        "type": {
-            "type": "string",
-            "enum": [
-                "AI_TDChangeset"
-            ]
-        },
-        "add": {
-            "type": "array",
-            "items": {
-                "oneOf": [
-                    {
-                        "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_trainingData.json"
-                    },
-                    {
-                        "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_eoTrainingData.json"
-                    }
-                ]
-            }
-        },
-        "changeCount": {
-            "type": "number"
-        },
-        "datasetId": {
-            "type": "string"
-        },
-        "delete": {
-            "type": "array",
-            "items": {
-                "oneOf": [
-                    {
-                        "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_trainingData.json"
-                    },
-                    {
-                        "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_eoTrainingData.json"
-                    }
-                ]
-            }
-        },
-        "id": {
-            "type": "string"
-        },
-        "modify": {
-            "type": "array",
-            "items": {
-                "oneOf": [
-                    {
-                        "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_trainingData.json"
-                    },
-                    {
-                        "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_eoTrainingData.json"
-                    }
-                ]
-            }
-        },
-        "version": {
-            "type": "string"
-        },
-        "createdTime": {
-            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/dateTime.json"
-        }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai_tdChangeset.json",
+  "title": "AI_TDChangeset",
+  "type": "object",
+  "required": [
+    "type",
+    "id",
+    "changeCount"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "AI_TDChangeset"
+      ]
+    },
+    "add": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "ai_trainingData.json"
+          },
+          {
+            "$ref": "ai_eoTrainingData.json"
+          }
+        ]
+      }
+    },
+    "changeCount": {
+      "type": "number"
+    },
+    "datasetId": {
+      "type": "string"
+    },
+    "delete": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "ai_trainingData.json"
+          },
+          {
+            "$ref": "ai_eoTrainingData.json"
+          }
+        ]
+      }
+    },
+    "id": {
+      "type": "string"
+    },
+    "modify": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "ai_trainingData.json"
+          },
+          {
+            "$ref": "ai_eoTrainingData.json"
+          }
+        ]
+      }
+    },
+    "version": {
+      "type": "string"
+    },
+    "createdTime": {
+      "$ref": "dateTime.json"
     }
+  }
 }

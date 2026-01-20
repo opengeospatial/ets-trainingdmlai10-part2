@@ -81,7 +81,7 @@
   </test>
 
   <!-- Abstract Test 29 -->
-  <test name="TD Changeset Class">
+  <test name="AI TDChangeset">
     <classes>
       <class name="org.opengis.cite.trainingdmlai10part2.tdchangeset.TDChangesetClassTests"/>
     </classes>

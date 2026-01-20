@@ -1,30 +1,30 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/qualityElement.json",
-    "title": "QualityElement",
-    "type": "object",
-    "required": [
-        "type",
-        "measure",
-        "evaluationMethod",
-        "result"
-    ],
-    "properties": {
-        "type": {
-            "type": "string"
-        },
-        "measure": {
-            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/measureReference.json"
-        },
-        "evaluationMethod": {
-            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/evaluationMethod.json"
-        },
-        "result": {
-            "type": "array",
-            "items": {
-                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/qualityResult.json"
-            },
-            "minItems": 1
-        }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "qualityElement.json",
+  "title": "QualityElement",
+  "type": "object",
+  "required": [
+    "type",
+    "measure",
+    "evaluationMethod",
+    "result"
+  ],
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "measure": {
+      "$ref": "measureReference.json"
+    },
+    "evaluationMethod": {
+      "$ref": "evaluationMethod.json"
+    },
+    "result": {
+      "type": "array",
+      "items": {
+        "$ref": "qualityResult.json"
+      },
+      "minItems": 1
     }
+  }
 }

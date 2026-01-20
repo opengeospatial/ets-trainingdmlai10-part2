@@ -1,31 +1,31 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_spatialTemporalExtent.json",
-    "title": "EX_SpatialTemporalExtent",
-    "type": "object",
-    "required": [
-        "extent",
-        "spatialExtent"
-    ],
-    "properties": {
-        "extent": {
-            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/tm_primitive.json"
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ex_spatialTemporalExtent.json",
+  "title": "EX_SpatialTemporalExtent",
+  "type": "object",
+  "required": [
+    "extent",
+    "spatialExtent"
+  ],
+  "properties": {
+    "extent": {
+      "$ref": "tm_primitive.json"
+    },
+    "verticalExtent": {
+      "$ref": "ex_verticalExtent.json"
+    },
+    "spatialExtent": {
+      "oneOf": [
+        {
+          "$ref": "ex_boundingPolygon.json"
         },
-        "verticalExtent": {
-            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_verticalExtent.json"
+        {
+          "$ref": "ex_geographicBoundingBox.json"
         },
-        "spatialExtent": {
-            "oneOf": [
-                {
-                    "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_boundingPolygon.json"
-                },
-                {
-                    "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_geographicBoundingBox.json"
-                },
-                {
-                    "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ex_geographicDescription.json"
-                }
-            ]
+        {
+          "$ref": "ex_geographicDescription.json"
         }
+      ]
     }
+  }
 }

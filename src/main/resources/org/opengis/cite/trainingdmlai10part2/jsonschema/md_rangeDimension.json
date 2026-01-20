@@ -1,20 +1,20 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/md_rangeDimension.json",
-    "title": "MD_RangeDimension",
-    "type": "object",
-    "properties": {
-        "sequenceIdentifier": {
-            "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/memberName.json"
-        },
-        "description": {
-            "type": "string"
-        },
-        "name": {
-            "type": "array",
-            "items": {
-                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/md_identifier.json"
-            }
-        }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "md_rangeDimension.json",
+  "title": "MD_RangeDimension",
+  "type": "object",
+  "properties": {
+    "sequenceIdentifier": {
+      "$ref": "memberName.json"
+    },
+    "description": {
+      "type": "string"
+    },
+    "name": {
+      "type": "array",
+      "items": {
+        "$ref": "md_identifier.json"
+      }
     }
+  }
 }
