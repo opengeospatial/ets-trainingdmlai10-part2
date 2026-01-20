@@ -1,44 +1,44 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_pixelLabel.json",
-    "title": "AI_PixelLabel",
-    "type": "object",
-    "required": [
-        "type",
-        "imageURL",
-        "imageFormat"
-    ],
-    "properties": {
-        "type": {
-            "type": "string",
-            "enum": [
-                "AI_PixelLabel"
-            ]
-        },
-        "confidence": {
-            "type": "number",
-            "default": 1.0,
-            "minimum": 0.0,
-            "maximum": 1.0
-        },
-        "isNegative": {
-            "type": "boolean",
-            "default": false
-        },
-        "imageFormat": {
-            "type": "array",
-            "items": {
-                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_imageFormatCode.json"
-            },
-            "minItems": 1
-        },
-        "imageURL": {
-            "type": "array",
-            "items": {
-                "type": "string",
-                "format": "uri-reference"
-            },
-            "minItems": 1
-        }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai_pixelLabel.json",
+  "title": "AI_PixelLabel",
+  "type": "object",
+  "required": [
+    "type",
+    "imageURL",
+    "imageFormat"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "AI_PixelLabel"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "default": 1.0,
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "isNegative": {
+      "type": "boolean",
+      "default": false
+    },
+    "imageFormat": {
+      "type": "array",
+      "items": {
+        "$ref": "ai_imageFormatCode.json"
+      },
+      "minItems": 1
+    },
+    "imageURL": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri-reference"
+      },
+      "minItems": 1
     }
+  }
 }
