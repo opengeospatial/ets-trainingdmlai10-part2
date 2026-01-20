@@ -1,25 +1,25 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/ai_metricsInLiterature.json",
-    "title": "AI_MetricsInLiterature",
-    "type": "object",
-    "required": [
-        "doi",
-        "metrics"
-    ],
-    "properties": {
-        "algorithm": {
-            "type": "string"
-        },
-        "doi": {
-            "type": "string"
-        },
-        "metrics": {
-            "type": "array",
-            "items": {
-                "$ref": "https://raw.githubusercontent.com/opengeospatial/TrainingDML-AI_SWG/main/schemas/1.0/json_schema/namedValue.json"
-            },
-            "minItems": 1
-        }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai_metricsInLiterature.json",
+  "title": "AI_MetricsInLiterature",
+  "type": "object",
+  "required": [
+    "doi",
+    "metrics"
+  ],
+  "properties": {
+    "algorithm": {
+      "type": "string"
+    },
+    "doi": {
+      "type": "string"
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "$ref": "namedValue.json"
+      },
+      "minItems": 1
     }
+  }
 }
