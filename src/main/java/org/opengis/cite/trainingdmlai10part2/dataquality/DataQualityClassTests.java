@@ -62,6 +62,14 @@ public class DataQualityClassTests extends CommonFixture {
     }
 
     /**
+     * Verify that instance documents using the AI_ClassBalanceDegree JSON objects listed in Table 16 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_classBalanceDegree.json">ai_classBalanceDegree.json</a>.
+     **/
+    @Test(description = "Implements Abstract Test 28 (/req/aidataquality/classbalancedegree)")
+    public void validateByClassBalanceDegree() {
+        throw new SkipException("Not implemented yet.");
+    }
+
+    /**
      * Checks the behavior of the trim function.
      */
     @Test(description = "Implements AI_DataQuality")

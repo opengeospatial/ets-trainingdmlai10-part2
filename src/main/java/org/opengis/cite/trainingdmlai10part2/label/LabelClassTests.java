@@ -61,7 +61,13 @@ public class LabelClassTests extends CommonFixture {
     }
 
     /**
-     * Checks the behavior of the trim function.
+     * Abstract Test 19: Verify that instance documents using the AI_Label JSON objects listed in Table 9 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_label.json">ai_label.json</a>.
+     * <br/><br/>
+     * Abstract Test 20: Verify that instance documents using the AI_SceneLabel JSON objects listed in Table 10 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_sceneLabel.json">ai_sceneLabel.json</a>.
+     * <br/><br/>
+     * Abstract Test 21: Verify that instance documents using the AI_ObjectLabel JSON objects listed in Table 11 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_objectLabel.json">ai_objectLabel.json</a>.
+     * <br/><br/>
+     * Abstract Test 22: Verify that instance documents using the AI_PixelLabel JSON objects listed in Table 12 validate against the JSON schema specified in <a href="http://schemas.opengis.net/trainingdml-ai/1.0/ai_pixelLabel.json">ai_pixelLabel.json</a>.
      */
     @Test(description = "Implements AI Label - TBA")
     public void validateByLabelSchema() {
@@ -147,4 +153,11 @@ public class LabelClassTests extends CommonFixture {
         }
     }
 
+    /**
+     * Verify that instance documents using the AI_ImageFormatCode JSON objects conform to the requirements specified by the Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types <a href="https://www.ietf.org/rfc/rfc2046.txt">[RFC 2046]</a>.
+     **/
+    @Test(description = "Implements Abstract Test 23 (/req/ailabel/imageformatcode)")
+    public void validateByImageFormatCode() {
+        throw new SkipException("Not implemented yet.");
+    }
 }
