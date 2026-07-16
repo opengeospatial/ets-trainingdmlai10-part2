@@ -190,16 +190,12 @@ public class IsoMetaDataTypeTest extends CommonFixture {
             List<JsonNode> nodes = JsonUtils.findNodesByNames(node, arrayToFetch);
 
             for (JsonNode targetNode : nodes) {
-                for (int i = 0; i < targetNode.size(); i++) {
-                    JsonNode currentNode = targetNode.get(i);
-                    String nodeClass = currentNode.getClass().toString();
-                    if (nodeClass.endsWith("com.fasterxml.jackson.databind.node.ObjectNode")) {
-                        Set<ValidationMessage> errors = schema.validate(currentNode);
-                        Iterator it = errors.iterator();
-                        while (it.hasNext()) {
-                            sb.append("Item " + i + " has error " + it.next() + ".\n");
-                        }
+                if (targetNode.isArray()) {
+                    for (int i = 0; i < targetNode.size(); i++) {
+                        validateScopeNode(schema, targetNode.get(i), sb, "Item " + i);
                     }
+                } else {
+                    validateScopeNode(schema, targetNode, sb, "Item " + targetNode);
                 }
             }
 
@@ -209,4 +205,16 @@ public class IsoMetaDataTypeTest extends CommonFixture {
         }
         Assert.assertTrue(sb.toString().length() == 0, sb.toString());
     }
+
+    private void validateScopeNode(JsonSchema schema, JsonNode node, StringBuffer sb, String label) {
+        if (!node.isObject()) {
+            sb.append(label + " is not an object.\n");
+            return;
+        }
+        Set<ValidationMessage> errors = schema.validate(node);
+        Iterator it = errors.iterator();
+        while (it.hasNext()) {
+            sb.append(label + " has error " + it.next() + ".\n");
+        }
+}
 }
