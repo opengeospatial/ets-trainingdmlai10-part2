@@ -9,10 +9,7 @@
   ],
   "properties": {
     "type": {
-      "type": "string",
-      "enum": [
-        "DataQuality"
-      ]
+      "type": "string"
     },
     "scope": {
       "$ref": "md_scope.json"
