@@ -4,8 +4,7 @@
   "title": "DataQuality",
   "type": "object",
   "required": [
-    "type",
-    "scope"
+    "type"
   ],
   "properties": {
     "type": {
